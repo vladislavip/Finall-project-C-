@@ -1,0 +1,17 @@
+C:\Users\SMAPE - V\source\repos\Final project\obj\Debug\net6.0\Final project.csproj.AssemblyReference.cache
+C:\Users\SMAPE - V\source\repos\Final project\obj\Debug\net6.0\Final project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SMAPE - V\source\repos\Final project\obj\Debug\net6.0\Final project.AssemblyInfoInputs.cache
+C:\Users\SMAPE - V\source\repos\Final project\obj\Debug\net6.0\Final project.AssemblyInfo.cs
+C:\Users\SMAPE - V\source\repos\Final project\obj\Debug\net6.0\Final project.csproj.CoreCompileInputs.cache
+C:\Users\SMAPE - V\source\repos\Final project\bin\Debug\net6.0\Final project.exe
+C:\Users\SMAPE - V\source\repos\Final project\bin\Debug\net6.0\Final project.deps.json
+C:\Users\SMAPE - V\source\repos\Final project\bin\Debug\net6.0\Final project.runtimeconfig.json
+C:\Users\SMAPE - V\source\repos\Final project\bin\Debug\net6.0\Final project.dll
+C:\Users\SMAPE - V\source\repos\Final project\bin\Debug\net6.0\Final project.pdb
+C:\Users\SMAPE - V\source\repos\Final project\bin\Debug\net6.0\ConsoleTables.dll
+C:\Users\SMAPE - V\source\repos\Final project\obj\Debug\net6.0\Final project.csproj.CopyComplete
+C:\Users\SMAPE - V\source\repos\Final project\obj\Debug\net6.0\Final project.dll
+C:\Users\SMAPE - V\source\repos\Final project\obj\Debug\net6.0\refint\Final project.dll
+C:\Users\SMAPE - V\source\repos\Final project\obj\Debug\net6.0\Final project.pdb
+C:\Users\SMAPE - V\source\repos\Final project\obj\Debug\net6.0\Final project.genruntimeconfig.cache
+C:\Users\SMAPE - V\source\repos\Final project\obj\Debug\net6.0\ref\Final project.dll
