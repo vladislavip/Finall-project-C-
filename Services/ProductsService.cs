@@ -15,30 +15,8 @@ namespace Final_project.Services
     internal class ProductsService
     {
 
-        public static int AddNewProduct(string productName, decimal price, string category, int productCount)
+        public static int AddNewProduct(string productName, decimal price, object parsedCategory, int productCount)
         {
-            if (string.IsNullOrWhiteSpace(productName))
-                throw new FormatException("Name is empty!");
-
-            if (price <= 0)
-                throw new FormatException("Price cannot be zero");
-
-            if (string.IsNullOrWhiteSpace(category))
-                throw new FormatException("Category is wrong!");
-
-            if (productCount <= 0)
-                throw new FormatException("Price can't be lower than 0!");
-
-
-            bool isSuccessful
-                = Enum.TryParse(typeof(ProductCategories), category, true, out object parsedCategory);
-
-            if (!isSuccessful)
-            {
-                throw new InvalidDataException("Category not found!");
-            }
-
-
             var newProduct = new Product();
             {
                 newProduct.ProductName = productName;
@@ -143,6 +121,34 @@ namespace Final_project.Services
 
 
         }
+
+        public static void ShowProductsByPriceRange(decimal lower, decimal upper)
+        {
+            var found =ProductsStorage.Products.Where(x=>x.Price>=lower && x.Price<=upper).ToList();
+           
+
+            var table = new ConsoleTable("Product Id", "Product Name", "Product Price",
+                    "Product Category", "Product Count");
+
+            if (found.Count == 0)
+
+            {
+                Console.WriteLine("No products in following price range");
+                return;
+            }
+
+
+            foreach (var product in found)
+            {
+                table.AddRow(product.Id, product.ProductName, product.Price,
+                    product.ProductCategory, product.ProductCount);
+            }
+
+            table.Write();
+
+        }
+
+
 
 
     } 
