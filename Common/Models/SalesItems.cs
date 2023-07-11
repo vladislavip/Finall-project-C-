@@ -15,9 +15,9 @@ namespace Final_project.Common.Models
             Id = count;
             count++;
         }
-        public Product SoldItem { get; set; }
+        public Product SalesItem { get; set; }
 
-        public int ItemCount { get; set; }
+        public int SalesItemCount { get; set; }
 
 
     }

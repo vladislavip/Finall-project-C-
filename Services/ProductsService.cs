@@ -27,6 +27,7 @@ namespace Final_project.Services
             }
             ProductsStorage.Products.Add(newProduct);
             return newProduct.Id;
+            //return product id for final confirmation message
         }
 
         public static List<Product> GetAllProducts()
@@ -148,8 +149,32 @@ namespace Final_project.Services
 
         }
 
+        public static void SearchProductByName(string productName) 
+        {
+            
+
+            var found=ProductsStorage.Products.FindAll(x => x.ProductName.ToLower().Trim() == productName.ToLower()).ToList();
+
+            var table = new ConsoleTable("Product Id", "Product Name", "Product Price",
+                    "Product Category", "Product Count");
+
+            if (found.Count == 0)
+
+            {
+                Console.WriteLine("No products founds by ");
+                return;
+            }
 
 
+            foreach (var product in found)
+            {
+                table.AddRow(product.Id, product.ProductName, product.Price,
+                    product.ProductCategory, product.ProductCount);
+            }
+
+            table.Write();
+
+        }
 
     } 
 }

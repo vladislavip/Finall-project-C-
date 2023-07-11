@@ -10,6 +10,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using System.Xml.Linq;
 
 namespace Final_project.Services
 {
@@ -39,6 +40,10 @@ namespace Final_project.Services
                     Console.WriteLine(i);
                 }
                 var category= Console.ReadLine();
+                category = category.Trim();
+                //Triming emnum value passed by user 
+
+
                 if (string.IsNullOrWhiteSpace(category))
                     throw new FormatException("Category is wrong!");
 
@@ -84,16 +89,19 @@ namespace Final_project.Services
                 //Method returning targeted by ID product
                 var product = ProductsService.ReturnTargetedByIdProduct(id);
 
+               
                 //User Menu for changing user property
-                Console.WriteLine("Select which preoperty you would like to change");
+                Console.WriteLine("Select which property you would like to change");
                 Console.WriteLine("1.Product Name");
                 Console.WriteLine("2.Product Price");
                 Console.WriteLine("3.Product Category");
                 Console.WriteLine("4.Product Count");
+                Console.WriteLine("5.Change one more ");
                 Console.WriteLine("5.Exit");
 
 
                 int option = int.Parse( Console.ReadLine());
+
 
                 switch (option) 
                 { 
@@ -106,6 +114,7 @@ namespace Final_project.Services
                         product.ProductName = name;
                         break;
                 case 2:
+                        //Check of property before set
                         Console.WriteLine("Enter New Product Price: ");
                         var price = decimal.Parse(Console.ReadLine());
                         if (price <= 0)
@@ -113,13 +122,14 @@ namespace Final_project.Services
                         product.Price = price;
                         break;
                 case 3:
-                        Console.WriteLine("Select new Product Category");
-                        Console.WriteLine("Select Product Category");
+                         
+                         Console.WriteLine("Select New Product Category: ");
                         foreach (string i in Enum.GetNames(typeof(ProductCategories)))
                         {
                             Console.WriteLine(i);
                         }
-                        var category = Console.ReadLine();
+                        var category = Console.ReadLine().Trim();
+                        //Trimmed
 
                         bool isSuccessful
                  = Enum.TryParse(typeof(ProductCategories), category, true, out object parsedCategory);
@@ -166,7 +176,7 @@ namespace Final_project.Services
                 Console.WriteLine("Write product ID you would like to delete: ");
 
                 int id=int.Parse( Console.ReadLine());  
-                ProductsService.RemoveProduct( id );
+                ProductsService.RemoveProduct(id);
                 ProductsService.GetAllProductsToTable();
             }
 
@@ -195,7 +205,7 @@ namespace Final_project.Services
                 }
                 var category = Console.ReadLine();
 
-                //Calling method xxxxxxx
+                //Calling method
                 ProductsService.ShowProductsInCattegory(category);
 
 
@@ -234,23 +244,26 @@ namespace Final_project.Services
             }
 
         }
+
         public static void MenuSearchProductByName()
         {
             try
             {
                 Console.WriteLine("Enter the product search keyword: ");
+                string searchWord= Console.ReadLine().Trim(); // Trimmed
+                if (string.IsNullOrWhiteSpace(searchWord))
+                    throw new FormatException("Name is empty!");
+
+                ProductsService.SearchProductByName(searchWord);
             }
             catch (Exception ex)
 
             {
                 Console.WriteLine("Error occured");
                 Console.WriteLine(ex.Message);
-
             }
 
         }
-
-        
 
     }
 

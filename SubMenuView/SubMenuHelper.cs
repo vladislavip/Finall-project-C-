@@ -15,6 +15,7 @@ namespace Final_project.Services
 
             do
             {
+             
                 Console.WriteLine("1.Add new product");
                 Console.WriteLine("2.Change product info");
                 Console.WriteLine("3.Delete product");
@@ -36,28 +37,36 @@ namespace Final_project.Services
                 switch (option)
                 {
                     case 1:
+
                         ProductsMenu.MenuAddNewProduct();
                         break;
                     case 2:
+                        
                         ProductsMenu.MenuChangeProductInfo();
                         break;
                     case 3:
+                     
                         ProductsMenu.MenuDeleteProduct();
                         break;
                     case 4:
+                       
                         ProductsMenu.MenuShowAllProducts(); 
                         break;
                     case 5:
+                   
                         ProductsMenu.MenuShowAllProductsByCategory();
                         break;
                     case 6:
+                        
                         ProductsMenu.MenuShowAllProductsByPriceRange();
                         break;
                     case 7:
+                   
                         ProductsMenu.MenuSearchProductByName();
                         break;
                     
                     default:
+                      
                         Console.WriteLine("Option doesn't exist");
                         break;
                 }
