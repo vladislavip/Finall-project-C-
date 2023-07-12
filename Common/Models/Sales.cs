@@ -19,6 +19,6 @@ namespace Final_project.Common.Models
         public decimal SaleValue {get; set;}    
         public DateTime SaleDate { get; set;}
 
-        public List<SalesItems> SaleItemsList;
+        public List<SalesItems> SaleItemsList; 
     }
 }

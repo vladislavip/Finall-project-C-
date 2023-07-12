@@ -176,5 +176,33 @@ namespace Final_project.Services
 
         }
 
+        public static void GetAnyProductListToTabe(List <Product> productsList) 
+        
+        {
+            var products = productsList;
+
+            var table = new ConsoleTable("Product Id", "Product Name", "Product Price",
+                    "Product Category", "Product Count");
+
+            if (products.Count == 0)
+
+            {
+                Console.WriteLine("No products yet");
+                return;
+            }
+
+
+            foreach (var product in products)
+            {
+                table.AddRow(product.Id, product.ProductName, product.Price,
+                    product.ProductCategory, product.ProductCount);
+            }
+
+            table.Write();
+
+        }
+
+        
+
     } 
 }

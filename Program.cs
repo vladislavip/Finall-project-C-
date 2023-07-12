@@ -4,28 +4,45 @@ using Final_project.Storage_classes;
 
 namespace Final_project
 {
+
+    //delegate List<Product> ProductUpdateDelegate();
+    
     internal class Program
     {
         static void Main(string[] args)
-        {
+        {   //Instance to product members
             ProductsService productsService = new ProductsService();
             ProductsMenu menu = new ProductsMenu(); 
-            ProductsStorage productsStorage = new ProductsStorage();
-            SalesItemStorage salesItemStorage = new SalesItemStorage();
+
+
+            //Instance to sales memvers
             SalesMenu salesMenu = new SalesMenu();
-            SalesServices salesServices = new SalesServices();  
+            SalesServices salesServices = new SalesServices();
 
-            
+            //Instance to storages
+            ProductsStorage productsStorage = new ProductsStorage();
+            SalesItemStorage salesItemStorage = new SalesItemStorage(); // remove, any sale items will be store in Sales list instance, delete class at the end
+            SalesStorage salesStorage = new SalesStorage();
 
-            Product product = new() { Id = 4, ProductName = "w", Price = 1, ProductCategory = 0, ProductCount = 1212 };
-            Product product1 = new() { Id = 55, ProductName = "s" , Price = 100, ProductCategory = 0, ProductCount = 122312 };
-            Product product2 = new() { Id = 554, ProductName = "q", Price = 200, ProductCategory = 0, ProductCount = 122312 };
-            Product product3 = new() { Id = 53345, ProductName = "q", Price = 23322, ProductCategory = 0, ProductCount = 122312 };
+
+            //Test products 
+            Product product = new() { Id = 5, ProductName = "w", Price = 1, ProductCategory = 0, ProductCount = 10 };
+            Product product1 = new() { Id = 55, ProductName = "s" , Price = 100, ProductCategory = 0, ProductCount = 20 };
+            Product product2 = new() { Id = 555, ProductName = "q", Price = 200, ProductCategory = 0, ProductCount = 30 };
+            Product product3 = new() { Id = 55555, ProductName = "q", Price = 20000, ProductCategory = 0, ProductCount = 4000 };
 
             ProductsStorage.Products.Add(product);
             ProductsStorage.Products.Add(product1);
             ProductsStorage.Products.Add(product2);
             ProductsStorage.Products.Add(product3);
+            //Test products
+
+
+            //Delegates
+            //ProductUpdateDelegate productUpdateDelegate;
+            //productUpdateDelegate = ProductsService.GetAllProducts();
+
+
 
 
             int option;

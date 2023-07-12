@@ -40,33 +40,32 @@ namespace Final_project.Services
 
                         ProductsMenu.MenuAddNewProduct();
                         break;
+
                     case 2:
-                        
                         ProductsMenu.MenuChangeProductInfo();
                         break;
+
                     case 3:
-                     
                         ProductsMenu.MenuDeleteProduct();
                         break;
+
                     case 4:
-                       
                         ProductsMenu.MenuShowAllProducts(); 
                         break;
+
                     case 5:
-                   
                         ProductsMenu.MenuShowAllProductsByCategory();
                         break;
+
                     case 6:
-                        
                         ProductsMenu.MenuShowAllProductsByPriceRange();
                         break;
+
                     case 7:
-                   
                         ProductsMenu.MenuSearchProductByName();
                         break;
                     
                     default:
-                      
                         Console.WriteLine("Option doesn't exist");
                         break;
                 }
@@ -93,7 +92,7 @@ namespace Final_project.Services
 
                 Console.WriteLine("Enter option");
 
-                while (!int.TryParse(Console.ReadLine(), out option)) ;
+                while (!int.TryParse(Console.ReadLine(), out option)) 
                 {
                     Console.WriteLine("Invalid option!");
                     Console.WriteLine("Enter option");
@@ -102,31 +101,28 @@ namespace Final_project.Services
                 switch (option)
                 {
                     case 1:
-                        //
+                        SalesMenu.MenuAddNewSale();
                         break;
                     case 2:
-                        //
+                        SalesMenu.MenuReturnSaleItems();
                         break;
                     case 3:
-                        //
+                        SalesMenu.MenuDeleteSale();
                         break;
                     case 4:
-                        //
+                        SalesMenu.MenuListAllSales();
                         break;
                     case 5:
-                        //
+                        SalesMenu.MenuListAllSalesAccordingToDateRange();
                         break;
                     case 6:
-                        //
+                        SalesMenu.MenuListAllSalesAccordingToSalesValueRange();
                         break;
                     case 7:
-                        //
+                        SalesMenu.MenuShowSaleAccordingToSpecificDate();
                         break;
                     case 8:
-                        //
-                        break;
-                    case 0:
-                        //
+                        SalesMenu.NenuShowSaleAccordingToId();
                         break;
                     default:
                         Console.WriteLine("Option doesn't exist");
