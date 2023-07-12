@@ -14,27 +14,11 @@ namespace Final_project.Services
     {
 
         public static void MenuAddNewSale()
-        {   //---------------------------------------------------------------------------------------------------------
-            //Sales item properties
-            // Id Auto generated
-            // public Product SalesItem { get; set; }
-             //public int SalesItemCount { get; set; }
-
-
-            //---------------------------------------------------------------------------------------------------------
-
-            //Sales  properties
-            // Id Auto generated
-            //public decimal SaleValue { get; set; }
-            //public DateTime SaleDate { get; set; 
-            //public List<SalesItems> SoldGoodsList;
-
-
+        {   
             try
             {
-                // -----------------------------Generation of SalesItem--------------------------------------------------
+                // -----------------------------Generation of SalesItem--------------------------------------------------------------------------------------
                 List<SalesItems> tempList = new(); // temp list for passing several sales item objects to transfer them to sales instanse list (property)
-
 
             Start:
                 Console.WriteLine("Starting conversion  of product to sale item");
@@ -66,7 +50,7 @@ namespace Final_project.Services
                 Console.WriteLine($"Product with ID: {id} successfully converted to sale item");
 
                 Console.WriteLine("ITEMS TO BE ADDED TO SALE:");
-             //-----------------------------------------------Temporary table for sale items that awaiting to be recorded to sale ---------------
+             //-----------------------------------------------Temporary table for sale items that awaiting to be recorded to sale ------------------------------
 
                 var tempSaleItems = tempList;
 
@@ -87,7 +71,7 @@ namespace Final_project.Services
 
                 table.Write();
 
-            //---------------------Need to add convert more products to sale item before adding them to sale?--------------------------------------------
+            //---------------------Need to add convert more products to sale item before adding them to sale?------------------------------------------------
 
             Repeat:
                 Console.WriteLine("Do you wish to generate more sale items before proceeding sale ?");
@@ -108,7 +92,7 @@ namespace Final_project.Services
                 }
 
                 End:
-                // -----------------------------Generation of Sale--------------------------------------------------------
+            // -----------------------------Generation of Sale----------------------------------------------------------------------------------------------
 
                 Console.WriteLine("Starting generating of sale");
 
@@ -131,8 +115,7 @@ namespace Final_project.Services
                 Console.WriteLine($"Sale with ID {sale.Id} succesfuly added to storage");
 
                 SalesServices.GetAllSalesToTable();
-                //---------------------------------------------------------------------------------------------------------
-
+                //-------------------------------------------------------------------------------------------------------------------------------------------
 
             }
 
@@ -146,8 +129,7 @@ namespace Final_project.Services
 
         public static void MenuReturnSaleItems()
         {
-         
-
+             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Finding the sale~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~---------------------------------------
             try
             {
                 var sales = SalesServices.GetAllSales ();
@@ -161,56 +143,76 @@ namespace Final_project.Services
                 SalesServices.GetAllSalesToTable();
                 //Table view of sales 
 
-                Console.WriteLine("Enter Id of sale from which you would like to return sale items");
+                Console.WriteLine("Enter Id of sale  from which you would like to return sale items");
 
-                int id = int.Parse(Console.ReadLine());
+                int saleId = int.Parse(Console.ReadLine());           // Take parameter to update method
 
-                var selectedSale= sales.Find(x => x.Id == id);
+                var selectedSale= sales.Find(x => x.Id == saleId);
 
+                if (selectedSale == null)
+                    throw new Exception($"Sale whith Id: {saleId} doesn't exist ");
 
+                //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Finding the sale item~~~~~~~~~~~~~~~~~~~~~~~---------------------------------------
 
                 var saleItemsInFoundSale= selectedSale.SaleItemsList.ToList();
                 //Getting list of sale items
-
 
                 SalesServices.GetAnySaleItemsListToTable(saleItemsInFoundSale);
 
                 Console.WriteLine("Select the Sale item ID you want return to product storage");
 
-                int saleItemId= int.Parse(Console.ReadLine());  
+                int saleItemId= int.Parse(Console.ReadLine());          // Take parameter to update method
 
                 var selectedSaleItemList= saleItemsInFoundSale.Where(x => x.Id == saleItemId).ToList();
                 //Got the tageted sale item in form of list for passing to table 
 
                 var selectedSaleItemObject= saleItemsInFoundSale.Find(x=>x.Id == saleItemId);
-                //Got the tageted sale item in form of object for moving it further to return
+                //Got the targeted sale item in form of object for moving it further to return
 
-                Console.WriteLine($"Your selected sale item is {45}, it will be now returned back to product stock: ");
+                Console.WriteLine($"Your selected sale item is {saleItemId}, it will be now returned back to product stock: ");
                 SalesServices.GetAnySaleItemsListToTable(selectedSaleItemList);
 
 
-                //------------------------------Returning to products storage----------------------------
+                //------------------------------Returning product to products storage------------------------------------------------------------------------
 
+                int productId = selectedSaleItemObject.SalesItem.Id;
+                //Getting the Id of product related to selected sale item TAKE parameter to update method
 
+                //------------------------------Count check---------------------------------------------------------------------------------------------------
+                Console.WriteLine( "Enter the the count you wish to return for selected sale item" );
 
+                int count=int.Parse(Console.ReadLine());
 
+                if (count == 0)
+                {
 
+                    throw new Exception("Count can't be zero");
+                }
+                if (count <0) 
+                {
+                    throw new Exception("Count can't be less than zero");
+                }
+                if (count < selectedSaleItemObject.SalesItemCount)
+                {
+                    throw new Exception("Cant return more than were sold ");
+                }
 
+                //---------------------------------------------------------------------------------------------------------------------------------------------
+                
+                var productStorageList = ProductsService.GetAllProducts();
+                var salesItemsStorageList = SalesServices.GetAllSaleItems();
+                var salesStorageList= SalesServices.GetAllSales();
 
+                //-------------------------------------Global storage update after nproduct return------------------------------------------------------------
+                SalesServices.UpdateOfAllStaticStoragesAfterReturningSaleItems(ref productStorageList, ref salesItemsStorageList, ref salesStorageList,
+                    ref selectedSale.SaleItemsList, productId, saleItemId, saleId, count);
 
+                //----------------------------------------------Test tables-----------------------------------------------------------------------------------
+                //ProductsService.GetAllProductsToTable();
+                //SalesServices.GetAllSalesToTable();
+                //SalesServices.GetAllSaleItemsToTable();
 
-
-
-
-
-
-
-
-
-
-
-
-
+                //SalesServices.GetAnySaleItemsListToTable(selectedSale.SaleItemsList);
 
             }
 
