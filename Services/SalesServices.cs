@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,14 +18,14 @@ namespace Final_project.Services
 
         public static List<Sales> GetAllSales()
         {
-    
-           return SalesStorage.Sales;
-           
+
+            return SalesStorage.Sales;
+
         }
         //Returns sales storage
 
         public static List<SalesItems> GetAllSaleItems()
-        {  
+        {
             return SalesItemStorage.SalesItems;
         }
         //Returns sales item storage
@@ -59,7 +60,7 @@ namespace Final_project.Services
                 Console.WriteLine(ex.Message);
             }
 
-           
+
         }
         //Show all sales from storage
 
@@ -94,7 +95,7 @@ namespace Final_project.Services
             }
 
 
-            
+
         }
         //Shows all sales from storage in table
 
@@ -159,7 +160,7 @@ namespace Final_project.Services
             {
                 var sales = list;
 
-                var table = new ConsoleTable("Sale ID", "Sale Date", "Sale Value");
+                var table = new ConsoleTable("Sale ID", "Sale Date", "Sale Value","Sale Items Count");
 
                 if (sales.Count == 0)
 
@@ -188,7 +189,7 @@ namespace Final_project.Services
 
 
         public static void GetAnySaleItemsListToTable(List<SalesItems> list)
-        
+
         {
             try
             {
@@ -218,7 +219,7 @@ namespace Final_project.Services
                 Console.WriteLine(ex.Message);
             }
 
-            
+
 
         }
         //Any sale items list to table
@@ -228,7 +229,7 @@ namespace Final_project.Services
         //-------------------------------------------------------------Storages update method if items returned----------------------------------------------------------------------------------------
 
         public static void UpdateOfAllStaticStoragesAfterReturningSaleItems(ref List<Product> productList, ref List<SalesItems> salesItems, ref List<Sales> sales,
-          ref List<SalesItems> listOfSaleItemsInSaleClass,  int ptoductId, int salesItemId, int saleId , int returnProructCount )
+          ref List<SalesItems> listOfSaleItemsInSaleClass, int ptoductId, int salesItemId, int saleId, int returnProructCount)
         {
 
             try
@@ -303,16 +304,28 @@ namespace Final_project.Services
             }
         }
 
+
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    }    
+        public static void ListAllSalesAccordingToTimeRange(DateTime startDate, DateTime endDate )
+        {
+            endDate = endDate.AddDays(1).AddSeconds(-1);
+
+            if (startDate > endDate)
+                throw new InvalidDataException("Start date can not be greater than end date!");
+
+            var sales = SalesStorage.Sales.Where(x => x.SaleDate >= startDate && x.SaleDate <= endDate).ToList();
 
 
+            SalesServices.GetAnySaleListToTable(sales); 
+           
 
 
+        }
 
-
-
+     
+        
+    }
 }
       
 

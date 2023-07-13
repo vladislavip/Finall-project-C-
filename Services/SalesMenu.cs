@@ -4,7 +4,9 @@ using Final_project.Common.Models;
 using Final_project.Storage_classes;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,8 +21,15 @@ namespace Final_project.Services
             {
                 // -----------------------------Generation of SalesItem--------------------------------------------------------------------------------------
                 List<SalesItems> tempList = new(); // temp list for passing several sales item objects to transfer them to sales instanse list (property)
+                Sales sale = new();
+                {
+                    //sale.SaleValue = SalesServices.SaleValueCalculator(existingProduct.Price, count);
+                    sale.SaleDate = DateTime.Now;
+                    sale.SaleItemsList = new();
 
+                }
             Start:
+
                 Console.WriteLine("Starting conversion  of product to sale item");
                 ProductsService.GetAllProductsToTable();
                 Console.WriteLine("Enter (ID) Product  that will become sale item: ");
@@ -91,19 +100,13 @@ namespace Final_project.Services
                         goto Repeat;
                 }
 
-                End:
-            // -----------------------------Generation of Sale----------------------------------------------------------------------------------------------
+            End:
+                // -----------------------------Generation of Sale----------------------------------------------------------------------------------------------
 
                 Console.WriteLine("Starting generating of sale");
 
+                sale.SaleValue += SalesServices.SaleValueCalculator(existingProduct.Price, salesItem.SalesItemCount);
 
-                Sales sale = new();
-                {
-                    sale.SaleValue = SalesServices.SaleValueCalculator(existingProduct.Price, count);
-                    sale.SaleDate = DateTime.Now;
-                    sale.SaleItemsList = new();  
-
-                }
 
 
                 sale.SaleItemsList = tempList;
@@ -121,11 +124,12 @@ namespace Final_project.Services
 
             catch (Exception ex) 
             {
+                
                 Console.WriteLine("Error occured");
                 Console.WriteLine(ex.Message);
             }
 
-        }
+        }    // Works
 
         public static void MenuReturnSaleItems()
         {
@@ -192,7 +196,7 @@ namespace Final_project.Services
                 {
                     throw new Exception("Count can't be less than zero");
                 }
-                if (count < selectedSaleItemObject.SalesItemCount)
+                if (count > selectedSaleItemObject.SalesItemCount)
                 {
                     throw new Exception("Cant return more than were sold ");
                 }
@@ -207,6 +211,7 @@ namespace Final_project.Services
                 SalesServices.UpdateOfAllStaticStoragesAfterReturningSaleItems(ref productStorageList, ref salesItemsStorageList, ref salesStorageList,
                     ref selectedSale.SaleItemsList, productId, saleItemId, saleId, count);
 
+                Console.WriteLine("All Storages update after  sales item return");
                 //----------------------------------------------Test tables-----------------------------------------------------------------------------------
                 //ProductsService.GetAllProductsToTable();
                 //SalesServices.GetAllSalesToTable();
@@ -223,21 +228,107 @@ namespace Final_project.Services
             }
            
 
-        }
-        public static void MenuDeleteSale()
+        } //....
+        public static void MenuDeleteSale()      //.....
         {
+          try
+            {
+                ////--------------------------------------------Storages------------------------------------------------------------------------------------
+                var productStorageList = ProductsService.GetAllProducts();
+                var salesItemsStorageList = SalesServices.GetAllSaleItems();
+                var salesStorageList = SalesServices.GetAllSales();
+
+                SalesServices.GetAllSalesToTable();
+                
+                Console.WriteLine("Enter sale id");
+
+                int saleId=int.Parse(Console.ReadLine());   
+
+                var existingSale = salesStorageList.FirstOrDefault(x => x.Id == saleId);
+            
+
+                var saleItemsListPropList = existingSale.SaleItemsList;
+
+                int cumulativeQty = 0;
+                decimal totalValue = 0;
+                foreach (var salesItem in saleItemsListPropList)
+                {
+
+                    cumulativeQty += salesItem.SalesItem.ProductCount;
+
+                    var productId = salesItem.SalesItem.Id;
+
+
+                    totalValue += salesItem.SalesItemCount * salesItem.SalesItem.Price;
+
+                    var exitingproduct = productStorageList.FirstOrDefault(x => x.Id == productId);
+
+                    exitingproduct.ProductCount += salesItem.SalesItemCount;
+
+
+                }
+                saleItemsListPropList.Clear();
+
+
+                existingSale.SaleValue -= totalValue;
+
+                salesStorageList = salesStorageList.Where(x => x.Id != saleId).ToList();
+                //Updating static storage 
+
+                existingSale.SaleItemsList.Clear(); 
+
+
+
+                ProductsService.GetAllProductsToTable();
+                SalesServices.GetAllSalesToTable();
+                SalesServices.GetAllSaleItemsToTable();
+
+            }
+
+            catch (Exception ex )
+            {
+                Console.WriteLine("Error occured");
+                Console.WriteLine(ex.Message);
+            }
 
         }
         public static void MenuListAllSales() 
-        { 
-        
-        }
-        public static void MenuListAllSalesAccordingToDateRange()
         {
+            SalesServices.GetAllSalesToTable();
+        }   // Works
+        public static void MenuListAllSalesAccordingToDateRange()  // Works
+        {
+            try
+            {
+
+                Console.WriteLine("Enter the starting date");
+
+
+                Console.WriteLine("Enter meeting's date (MM/dd/yyyy HH:mm) : ");
+                DateTime startDate = DateTime.ParseExact(Console.ReadLine(), "MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
+
+                Console.WriteLine("Enter the ending date");
+
+                Console.WriteLine("Enter meeting's date (MM/dd/yyyy HH:mm) : ");
+                DateTime endDate = DateTime.ParseExact(Console.ReadLine(), "MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
+
+                SalesServices.ListAllSalesAccordingToTimeRange(startDate, endDate);
+
+            }
+
+            catch (Exception ex) 
+            {
+                Console.WriteLine("");
+
+            }
+
+               
 
         }
-        public static void MenuListAllSalesAccordingToSalesValueRange()
+        public static void MenuListAllSalesAccordingToSalesValueRange() //
         {
+
+
 
         }
         public static void MenuShowSaleAccordingToSpecificDate()
