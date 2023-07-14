@@ -9,7 +9,7 @@ namespace Final_project.Storage_classes
 {
     internal class SalesStorage
     {
-
+       
         public static List<Sales> Sales;
 
         public SalesStorage()

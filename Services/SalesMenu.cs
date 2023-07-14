@@ -6,7 +6,7 @@ namespace Final_project.Services
 {
     internal class SalesMenu
     {
-
+        static bool isTest = true;
         public static void MenuAddNewSale()
         {
             List<SalesItems> tempList = new();
@@ -46,17 +46,17 @@ namespace Final_project.Services
 
 
                 //-----------------------Filtering input------------------------------------------------
-                if (count == 0)
+                if (count == 0 || count < 0)
                 {
 
-                    Console.WriteLine("Count cant be zero , you wil be returned to start");
+                    Console.WriteLine("Count cant be zero , you wil be returned to INPUT START==> ");
                     Console.WriteLine("------------------------------------------------------------");
                     goto Start;
                 }
 
                 if (existingProduct.ProductCount - count < 0)
                 {
-                    Console.WriteLine("Count cant be more than product count , you will be returned to start");
+                    Console.WriteLine("Count cant be more than product count , you will be returned to INPUT START==> ");
                     Console.WriteLine("------------------------------------------------------------");
                     goto Start;
 
@@ -74,7 +74,7 @@ namespace Final_project.Services
 
                 }
 
-
+                //----------------------------------------Sales item generation---------------------------------------------
 
                 SalesItems salesItem = new();
                 {
@@ -97,6 +97,7 @@ namespace Final_project.Services
                 Console.WriteLine("Do you want to add one more product to sales list?");
                 Console.WriteLine("1.Yes");
                 Console.WriteLine("2.No");
+                Console.WriteLine("------------------------------------------------------------");
 
                 string choice = Console.ReadLine();
 
@@ -140,11 +141,37 @@ namespace Final_project.Services
 
                 SalesStorage.Sales.Add(sale);
 
-                ProductsService.GetAllProductsToTable();
-                SalesServices.GetAllSaleItemsToTable();
+                Console.WriteLine("Sale succesfuly added");
                 SalesServices.GetAllSalesToTable();
-                SalesServices.GetAnySaleItemsListToTable(sale.SaleItemsList);
-                SalesServices.GetAnySaleItemsListToTable(tempList);
+
+
+                if (isTest)
+                {
+
+                    string loading = "LOADING REPORTS";
+                    for (int i = 0; i < loading.Length; i++)
+                    {
+                        Thread.Sleep(100);
+                        Console.Write(loading[i]);
+                        Console.Write("_");
+                    }
+
+                    Console.WriteLine("---------------------------------------------------------------------------------");
+                    Console.WriteLine("REPORTS");
+                    Console.WriteLine("-----------------------Products static storage------------------------------------");
+                    ProductsService.GetAllProductsToTable();
+                    Console.WriteLine("-----------------------Sale Items static storage---------------------------------");
+                    SalesServices.GetAllSaleItemsToTable();
+                    Console.WriteLine("-----------------------Sales static storage----------------------------------------");
+                    SalesServices.GetAllSalesToTable();
+                    Console.WriteLine("-----------------------Sales dynamic sales list property-------------------------");
+                    SalesServices.GetAnySaleItemsListToTable(sale.SaleItemsList);
+                    Console.WriteLine("-----------------------Sales dynamic temp sales list property-------------------------");
+                    SalesServices.GetAnySaleItemsListToTable(tempList);
+
+                }
+
+
 
             }
 
@@ -157,13 +184,14 @@ namespace Final_project.Services
             }
 
 
-        }
+        }  //Don;t touch , works 
 
         public static void MenuReturnSaleItems()
         {
 
             try
             {
+            Start:
                 SalesServices.GetAllSaleItemsToTable();
 
 
@@ -190,13 +218,32 @@ namespace Final_project.Services
                     throw new Exception("Wrong count input");
 
 
-                //---------Product------------------------
-                existingSaleitems.SalesItem.ProductCount += count;
+                //------------------Count filter--------------------------------------------------
+                if (count == 0 || count < 0)
+                {
 
-                //--------Sales item ---------------------
-                existingSaleitems.SalesItemCount -= count;
+                    Console.WriteLine("Count cant be zero , you wil be returned to start");
+                    Console.WriteLine("------------------------------------------------------------");
+                    goto Start;
+                }
 
-                //--------------------------------------
+                if (existingSaleitems.SalesItemCount - count < 0)
+                {
+                    Console.WriteLine("Count cant be more than product count , you will be returned to start");
+                    Console.WriteLine("------------------------------------------------------------");
+                    goto Start;
+
+                }
+                if (existingSaleitems.SalesItemCount - count >= 0 || existingSaleitems.SalesItemCount - count == 0)
+                {
+                    //---------Product------------------------
+                    existingSaleitems.SalesItem.ProductCount += count;
+
+                    //--------Sales item ---------------------
+                    existingSaleitems.SalesItemCount -= count;
+
+                }
+
 
                 var saleList = SalesStorage.Sales.Find((x => x.SaleItemsList.Contains(existingSaleitems)));
 
@@ -207,45 +254,32 @@ namespace Final_project.Services
 
                 saleList.SaleValue -= existingSaleitems.SalesItem.Price * count;
 
+                Console.WriteLine("Products succsesfuly returned from sale");
+                ProductsService.GetAllProductsToTable();
 
-                //var productId = existingSaleitems.SalesItem.Id;
-                //var  productPrice = existingSaleitems.SalesItem.Price;
+                if (isTest)
+                {
 
-                //decimal totalValueOfSaleItem = productPrice * count;     
+                    string loading = "LOADING REPORTS";
+                    for (int i = 0; i < loading.Length; i++)
+                    {
+                        Thread.Sleep(100);
+                        Console.Write(loading[i]);
+                    }
 
+                    Console.WriteLine("---------------------------------------------------------------------------------");
+                    Console.WriteLine("REPORTS");
+                    Console.WriteLine("-----------------------Products static storage------------------------------------");
+                    ProductsService.GetAllProductsToTable();
+                    Console.WriteLine("-----------------------Sale Items static storage---------------------------------");
+                    SalesServices.GetAllSaleItemsToTable();
+                    Console.WriteLine("-----------------------Sales static storage----------------------------------------");
+                    SalesServices.GetAllSalesToTable();
+                    Console.WriteLine("-----------------------Sales dynamic salest list property-------------------------");
+                    SalesServices.GetAnySaleItemsListToTable(saleList.SaleItemsList);
 
+                }
 
-                //var selectedproduct = ProductsStorage.Products.FirstOrDefault(x => x.Id == productId);
-                //selectedproduct.ProductCount = selectedproduct.ProductCount + count;
-
-
-                //---------------------------------Removing empty items-------------------------------------------------
-
-                // if (existingSaleitems.SalesItemCount == 0  ) // just in case >0
-                // {
-                //     SalesItemStorage.SalesItems.Remove(existingSaleitems);     // throw sale item from static list 
-                // }
-
-                //foreach (var item in saleList.SaleItemsList)
-                // {
-                //     if (item.SalesItemCount==0)
-                //  
-                // foreach (var item in SalesStorage.Sales)
-                // { 
-                //   if(item.SaleItemsList.Count==0) 
-                //         SalesStorage.Sales.Remove(item);
-                // }       saleList.SaleItemsList.Remove(item);                        // throw sale item from property list 
-
-
-                // }
-
-
-                ProductsService.GetAllProductsToTable();   //Shows correct
-                SalesServices.GetAllSaleItemsToTable();
-                SalesServices.GetAllSalesToTable();
-
-
-                SalesServices.GetAnySaleItemsListToTable(saleList.SaleItemsList);
 
             }
 
@@ -257,105 +291,7 @@ namespace Final_project.Services
 
             }
 
-
-
-
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Finding the sale~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~---------------------------------------
-            //try
-            //{
-            //    var sales = SalesServices.GetAllSales ();
-            //    // Looking for sales from static storage
-
-            //    if (sales == null) 
-            //    {
-            //        Console.WriteLine("Sales list is empty");
-            //    }
-
-            //    SalesServices.GetAllSalesToTable();
-            //    //Table view of sales 
-
-            //    Console.WriteLine("Enter Id of sale  from which you would like to return sale items");
-
-            //    int saleId = int.Parse(Console.ReadLine());           // Take parameter to update method
-
-            //    var selectedSale= sales.Find(x => x.Id == saleId);
-
-            //    if (selectedSale == null)
-            //        throw new Exception($"Sale whith Id: {saleId} doesn't exist ");
-
-            //    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Finding the sale item~~~~~~~~~~~~~~~~~~~~~~~---------------------------------------
-
-            //    var saleItemsInFoundSale= selectedSale.SaleItemsList.ToList();
-            //    //Getting list of sale items
-
-            //    SalesServices.GetAnySaleItemsListToTable(saleItemsInFoundSale);
-
-            //    Console.WriteLine("Select the Sale item ID you want return to product storage");
-
-            //    int saleItemId= int.Parse(Console.ReadLine());          // Take parameter to update method
-
-            //    var selectedSaleItemList= saleItemsInFoundSale.Where(x => x.Id == saleItemId).ToList();
-            //    //Got the tageted sale item in form of list for passing to table 
-
-            //    var selectedSaleItemObject= saleItemsInFoundSale.Find(x=>x.Id == saleItemId);
-            //    //Got the targeted sale item in form of object for moving it further to return
-
-            //    Console.WriteLine($"Your selected sale item is {saleItemId}, it will be now returned back to product stock: ");
-            //    SalesServices.GetAnySaleItemsListToTable(selectedSaleItemList);
-
-
-            //    //------------------------------Returning product to products storage------------------------------------------------------------------------
-
-            //    int productId = selectedSaleItemObject.SalesItem.Id;
-            //    //Getting the Id of product related to selected sale item TAKE parameter to update method
-
-            //    //------------------------------Count check---------------------------------------------------------------------------------------------------
-            //    Console.WriteLine( "Enter the the count you wish to return for selected sale item" );
-
-            //    int count=int.Parse(Console.ReadLine());
-
-            //    if (count == 0)
-            //    {
-
-            //        throw new Exception("Count can't be zero");
-            //    }
-            //    if (count <0) 
-            //    {
-            //        throw new Exception("Count can't be less than zero");
-            //    }
-            //    if (count > selectedSaleItemObject.SalesItemCount)
-            //    {
-            //        throw new Exception("Cant return more than were sold ");
-            //    }
-
-            //    //---------------------------------------------------------------------------------------------------------------------------------------------
-
-            //    var productStorageList = ProductsService.GetAllProducts();
-            //    var salesItemsStorageList = SalesServices.GetAllSaleItems();
-            //    var salesStorageList= SalesServices.GetAllSales();
-
-            //    //-------------------------------------Global storage update after nproduct return------------------------------------------------------------
-            //    SalesServices.UpdateOfAllStaticStoragesAfterReturningSaleItems(ref productStorageList, ref salesItemsStorageList, ref salesStorageList,
-            //        ref selectedSale.SaleItemsList, productId, saleItemId, saleId, count);
-
-            //    Console.WriteLine("All Storages update after  sales item return");
-            //    //----------------------------------------------Test tables-----------------------------------------------------------------------------------
-            //    //ProductsService.GetAllProductsToTable();
-            //    //SalesServices.GetAllSalesToTable();
-            //    //SalesServices.GetAllSaleItemsToTable();
-
-            //    //SalesServices.GetAnySaleItemsListToTable(selectedSale.SaleItemsList);
-
-            //}
-
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("Error occured");
-            //    Console.WriteLine(ex.Message);
-            //}
-
-
-        } //....
+        } //Works , ask if empty storages should be cleaned
         public static void MenuDeleteSale()      //.....
         {
             try
@@ -370,6 +306,8 @@ namespace Final_project.Services
                 Console.WriteLine("Enter sale id");
 
                 int saleId = int.Parse(Console.ReadLine());
+                if (isSuccesfullParseProductId == false)
+                    throw new Exception("Wrong ID input");
 
                 var existingSale = salesStorageList.FirstOrDefault(x => x.Id == saleId);
 
@@ -406,9 +344,28 @@ namespace Final_project.Services
 
 
 
-                ProductsService.GetAllProductsToTable();
-                SalesServices.GetAllSalesToTable();
-                SalesServices.GetAllSaleItemsToTable();
+                if (isTest)
+                {
+
+                    string loading = "LOADING REPORTS";
+                    for (int i = 0; i < loading.Length; i++)
+                    {
+                        Thread.Sleep(100);
+                        Console.Write(loading[i]);
+                    }
+
+                    Console.WriteLine("---------------------------------------------------------------------------------");
+                    Console.WriteLine("REPORTS");
+                    Console.WriteLine("-----------------------Products static storage------------------------------------");
+                    ProductsService.GetAllProductsToTable();
+                    Console.WriteLine("-----------------------Sale Items static storage---------------------------------");
+                    SalesServices.GetAllSaleItemsToTable();
+                    Console.WriteLine("-----------------------Sales static storage----------------------------------------");
+                    SalesServices.GetAllSalesToTable();
+                    Console.WriteLine("-----------------------Sales dynamic salest list property-------------------------");
+                    SalesServices.GetAnySaleItemsListToTable(existingSale.SaleItemsList);
+
+                }
 
             }
 
@@ -419,10 +376,10 @@ namespace Final_project.Services
             }
 
         }
-        public static void MenuListAllSales()
+        public static void MenuListAllSales()  //
         {
-            SalesServices.GetAllSalesToTable();
-        }   // Works
+            SalesServices.GetAllSalesToTable();   // Works
+        }   
         public static void MenuListAllSalesAccordingToDateRange()  // Works
         {
             try

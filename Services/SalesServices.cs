@@ -1,14 +1,6 @@
 ﻿using ConsoleTables;
 using Final_project.Common.Models;
 using Final_project.Storage_classes;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Final_project.Services
 {
@@ -71,7 +63,7 @@ namespace Final_project.Services
             {
                 var sales = SalesServices.GetAllSales();
 
-                var table = new ConsoleTable("Sale ID", "Sale Value", "Sale Date", "Sale Items Count" );
+                var table = new ConsoleTable("Sale ID", "Sale Value", "Sale Date", "Sale Items Count");
 
                 if (sales.Count == 0)
 
@@ -80,11 +72,11 @@ namespace Final_project.Services
                     return;
                 }
 
-               
+
 
                 foreach (var sale in sales)
                 {
-                    
+
                     table.AddRow(sale.Id, sale.SaleValue, sale.SaleDate, sale.SaleItemsList.Count);
                 }
 
@@ -131,7 +123,7 @@ namespace Final_project.Services
             {
                 var sales = list;
 
-                var table = new ConsoleTable("Sale ID", "Sale Date", "Sale Value","Sale Items Count");
+                var table = new ConsoleTable("Sale ID", "Sale Date", "Sale Value", "Sale Items Count");
 
                 if (sales.Count == 0)
 
@@ -278,7 +270,7 @@ namespace Final_project.Services
 
         ////----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public static void ListAllSalesAccordingToTimeRange(DateTime startDate, DateTime endDate )
+        public static void ListAllSalesAccordingToTimeRange(DateTime startDate, DateTime endDate)
         {
             endDate = endDate.AddDays(1).AddSeconds(-1);
 
@@ -288,19 +280,19 @@ namespace Final_project.Services
             var sales = SalesStorage.Sales.Where(x => x.SaleDate >= startDate && x.SaleDate <= endDate).ToList();
 
 
-            SalesServices.GetAnySaleListToTable(sales); 
-           
+            SalesServices.GetAnySaleListToTable(sales);
+
 
 
         }
 
-     
-        
+
+
     }
 }
-      
 
 
 
-    
+
+
 
