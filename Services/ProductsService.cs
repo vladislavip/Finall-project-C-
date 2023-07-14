@@ -21,7 +21,7 @@ namespace Final_project.Services
             {
                 var newProduct = new Product();
                 {
-                    newProduct.ProductName = productName;
+                    newProduct.ProductName = productName.Trim();
                     newProduct.Price = price;
                     newProduct.ProductCategory = (ProductCategories)parsedCategory;
                     newProduct.ProductCount = productCount;
@@ -210,7 +210,7 @@ namespace Final_project.Services
                 if (found.Count == 0)
 
                 {
-                    Console.WriteLine("No products founds by ");
+                    Console.WriteLine($"Products with Name: {productName} not found");
                     return;
                 }
 

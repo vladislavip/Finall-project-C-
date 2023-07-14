@@ -62,7 +62,7 @@ namespace Final_project.Services
                     throw new FormatException("Price can't be lower than 0!");
 
                 //Calling method to create and add new product to storage
-                int id =ProductsService.AddNewProduct( name, price, parsedCategory, count );
+                int id =ProductsService.AddNewProduct( name.Trim(), price, parsedCategory, count );
                 Console.WriteLine($"Succesfuly added product {id} to database");
 
                 //Method calling table for showing products in storage
@@ -111,7 +111,7 @@ namespace Final_project.Services
                         var name = Console.ReadLine();
                         if (string.IsNullOrWhiteSpace(name))
                             throw new FormatException("Name is empty!");
-                        product.ProductName = name;
+                        product.ProductName = name.Trim();
                         break;
                 case 2:
                         //Check of property before set

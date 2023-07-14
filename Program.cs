@@ -12,7 +12,7 @@ namespace Final_project
         static void Main(string[] args)
         {   //Instance to product members
             ProductsService productsService = new ProductsService();
-            ProductsMenu menu = new ProductsMenu(); 
+            ProductsMenu menu = new ProductsMenu();
 
 
             //Instance to sales memvers
@@ -25,17 +25,32 @@ namespace Final_project
             SalesStorage salesStorage = new SalesStorage();
 
 
-            //Test products 
-            Product product = new() { Id = 5, ProductName = "w", Price = 1, ProductCategory = 0, ProductCount = 10 };
-            Product product1 = new() { Id = 55, ProductName = "s" , Price = 100, ProductCategory = 0, ProductCount = 20 };
-            Product product2 = new() { Id = 555, ProductName = "q", Price = 200, ProductCategory = 0, ProductCount = 30 };
-            Product product3 = new() { Id = 55555, ProductName = "q", Price = 20000, ProductCategory = 0, ProductCount = 4000 };
+            ////Test products 
+            //Product product = new() { Id = 0, ProductName = "w", Price = 1, ProductCategory = 0,  ProductCount = 10};
+            Product product1 = new() { Id = 5, ProductName = "s", Price = 1, ProductCategory = 0, ProductCount = 10 };
+            Product product2 = new() { Id = 6, ProductName = "q", Price = 2, ProductCategory = 0, ProductCount = 20 };
+            Product product3 = new() { Id = 7, ProductName = "q", Price = 3, ProductCategory = 0, ProductCount = 30 };
 
-            ProductsStorage.Products.Add(product);
+
+
+            //ProductsStorage.Products.Add(product);
             ProductsStorage.Products.Add(product1);
             ProductsStorage.Products.Add(product2);
             ProductsStorage.Products.Add(product3);
             //Test products
+
+            //Test Sale items
+
+            //SalesItems salesItems = new() { Id = 0, SalesItem = product, SalesItemCount = 10 };
+            //SalesItems salesItems1 = new() { Id = 1, SalesItem = product1, SalesItemCount = 20 };
+            //SalesItems salesItems2 = new() { Id = 2, SalesItem = product2, SalesItemCount = 20 };
+
+            //SalesItemStorage.SalesItems.Add(salesItems);
+            //SalesItemStorage.SalesItems.Add(salesItems1);
+            //SalesItemStorage.SalesItems.Add(salesItems2);
+            ////Test Sale items
+
+            //Sales sale = new() { Id = 1, SaleDate = DateTime.Now, SaleItemsList = new List<SalesItems> { salesItems, salesItems1, salesItems2 } };
 
 
             //Delegates

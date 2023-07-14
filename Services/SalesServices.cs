@@ -16,6 +16,7 @@ namespace Final_project.Services
     internal class SalesServices
     {
 
+
         public static List<Sales> GetAllSales()
         {
 
@@ -70,7 +71,7 @@ namespace Final_project.Services
             {
                 var sales = SalesServices.GetAllSales();
 
-                var table = new ConsoleTable("Sale ID", "Sale Value", "Sale Date");
+                var table = new ConsoleTable("Sale ID", "Sale Value", "Sale Date", "Sale Items Count" );
 
                 if (sales.Count == 0)
 
@@ -79,10 +80,12 @@ namespace Final_project.Services
                     return;
                 }
 
+               
 
                 foreach (var sale in sales)
                 {
-                    table.AddRow(sale.Id, sale.SaleValue, sale.SaleDate);
+                    
+                    table.AddRow(sale.Id, sale.SaleValue, sale.SaleDate, sale.SaleItemsList.Count);
                 }
 
                 table.Write();
@@ -99,38 +102,6 @@ namespace Final_project.Services
         }
         //Shows all sales from storage in table
 
-
-        public static int ProductConversionToSalesItem(ref List<Product> products, int productId, int quantityToDeduct)
-
-        {
-            try
-            {
-                var productExsist = products.Find(x => x.Id == productId);
-
-                if (productExsist == null)
-                    throw new Exception($"Product with ID {productId} doesn't exist.");
-
-
-                if (productExsist.ProductCount < quantityToDeduct)
-                    throw new Exception("Not enough product");
-
-                if (productExsist.ProductCount == quantityToDeduct)
-                    Console.WriteLine($"Product {productExsist.ProductName} is out of stock");
-
-                productExsist.ProductCount = productExsist.ProductCount - quantityToDeduct;
-
-                return productId;
-            }
-
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error occured");
-                Console.WriteLine(ex.Message);
-                return 0;
-            }
-
-        }
-        // This method will control product storage when product is withdrawn for a sale (Find returns object while Where returns list)
 
         public static decimal SaleValueCalculator(decimal productPrice, int saleItemCount)
         {
@@ -172,7 +143,7 @@ namespace Final_project.Services
 
                 foreach (var sale in sales)
                 {
-                    table.AddRow(sale.Id, sale.SaleDate, sale.SaleValue);
+                    table.AddRow(sale.Id, sale.SaleDate, sale.SaleValue, sale.SaleItemsList.Count);
                 }
 
                 table.Write();
@@ -226,86 +197,86 @@ namespace Final_project.Services
 
 
 
-        //-------------------------------------------------------------Storages update method if items returned----------------------------------------------------------------------------------------
+        ////-------------------------------------------------------------Storages update method if items returned----------------------------------------------------------------------------------------
 
-        public static void UpdateOfAllStaticStoragesAfterReturningSaleItems(ref List<Product> productList, ref List<SalesItems> salesItems, ref List<Sales> sales,
-          ref List<SalesItems> listOfSaleItemsInSaleClass, int ptoductId, int salesItemId, int saleId, int returnProructCount)
-        {
+        //public static void UpdateOfAllStaticStoragesAfterReturningSaleItems(ref List<Product> productList, ref List<SalesItems> salesItems, ref List<Sales> sales,
+        //  ref List<SalesItems> listOfSaleItemsInSaleClass, int ptoductId, int salesItemId, int saleId, int returnProructCount)
+        //{
 
-            try
-            {  //-----------------------------------------Change on Product Storage----------------------------------------------------------------------
-                var existingProduct = productList.Find(x => x.Id == ptoductId);
+        //    try
+        //    {  //-----------------------------------------Change on Product Storage----------------------------------------------------------------------
+        //        var existingProduct = productList.Find(x => x.Id == ptoductId);
 
-                if (existingProduct == null)
-                {
-                    Console.WriteLine("There is no such product");
-                }
+        //        if (existingProduct == null)
+        //        {
+        //            Console.WriteLine("There is no such product");
+        //        }
 
-                existingProduct.ProductCount += returnProructCount;
-
-
-                //-----------------------------------------Change on Sales Items Storage-----------------------------------------------------------------
-
-                var existingSaleItem = salesItems.Find(x => x.Id == salesItemId);
-
-                if (existingSaleItem == null)
-                {
-                    Console.WriteLine("There is no such sales item");
-                }
-                //existingSaleItem.SalesItem.ProductCount += returnProructCount;
-
-                existingSaleItem.SalesItemCount -= returnProructCount;
-
-                //----------------------------------------Change on Sale Items Storage--------------------------------------------------------------------------
+        //        existingProduct.ProductCount += returnProructCount;
 
 
-                var exsistingSale = sales.Find(x => x.Id == saleId);
+        //        //-----------------------------------------Change on Sales Items Storage-----------------------------------------------------------------
 
-                if (exsistingSale == null)
-                {
-                    Console.WriteLine("There is no such sales");
+        //        var existingSaleItem = salesItems.Find(x => x.Id == salesItemId);
 
-                }
-                foreach (var saleItem in exsistingSale.SaleItemsList)
-                {
-                    //saleItem.SalesItemCount -= returnProructCount;
-                    //saleItem.SalesItem.ProductCount += returnProructCount;
+        //        if (existingSaleItem == null)
+        //        {
+        //            Console.WriteLine("There is no such sales item");
+        //        }
+        //        //existingSaleItem.SalesItem.ProductCount += returnProructCount;
 
-                }
+        //        existingSaleItem.SalesItemCount -= returnProructCount;
 
-                exsistingSale.SaleValue -= returnProructCount * existingProduct.Price; // Updating sale Value
-
-                //----------------------------------------Change on Sale  Class List Property --------------------------------------------------------------------------
+        //        //----------------------------------------Change on Sale Items Storage--------------------------------------------------------------------------
 
 
-                //var exsistingSaleProperty = listOfSaleItemsInSaleClass.Where(x => x.Id == saleId).ToList();
+        //        var exsistingSale = sales.Find(x => x.Id == saleId);
 
-                //if (exsistingSale == null)
-                //{
-                //    Console.WriteLine("There is no such sales");
+        //        if (exsistingSale == null)
+        //        {
+        //            Console.WriteLine("There is no such sales");
 
-                //}
+        //        }
+        //        foreach (var saleItem in exsistingSale.SaleItemsList)
+        //        {
+        //            //saleItem.SalesItemCount -= returnProructCount;
+        //            //saleItem.SalesItem.ProductCount += returnProructCount;
 
-                //foreach (var saleItem in exsistingSaleProperty)
+        //        }
 
-                //{
-                //    saleItem.SalesItemCount -= returnProructCount;
-                //    saleItem.SalesItem.ProductCount += returnProructCount;
+        //        exsistingSale.SaleValue -= returnProructCount * existingProduct.Price; // Updating sale Value
 
-                //}
-            }
-
-            catch (Exception ex)
-
-            {
-                Console.WriteLine("Error occured");
-                Console.WriteLine(ex.Message);
-
-            }
-        }
+        //        //----------------------------------------Change on Sale  Class List Property --------------------------------------------------------------------------
 
 
-        //----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //        //var exsistingSaleProperty = listOfSaleItemsInSaleClass.Where(x => x.Id == saleId).ToList();
+
+        //        //if (exsistingSale == null)
+        //        //{
+        //        //    Console.WriteLine("There is no such sales");
+
+        //        //}
+
+        //        //foreach (var saleItem in exsistingSaleProperty)
+
+        //        //{
+        //        //    saleItem.SalesItemCount -= returnProructCount;
+        //        //    saleItem.SalesItem.ProductCount += returnProructCount;
+
+        //        //}
+        //    }
+
+        //    catch (Exception ex)
+
+        //    {
+        //        Console.WriteLine("Error occured");
+        //        Console.WriteLine(ex.Message);
+
+        //    }
+        //}
+
+
+        ////----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         public static void ListAllSalesAccordingToTimeRange(DateTime startDate, DateTime endDate )
         {
