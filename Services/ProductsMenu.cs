@@ -39,7 +39,7 @@ namespace Final_project.Services
                 {
                     Console.WriteLine(i);
                 }
-                var category= Console.ReadLine();
+                string category= Console.ReadLine();
                 category = category.Trim();
                 //Triming emnum value passed by user 
 
@@ -54,6 +54,7 @@ namespace Final_project.Services
                 {
                     throw new InvalidDataException("Category not found!");
                 }
+                
 
                 //Full count check
                 Console.WriteLine("Enter the product's count: ");

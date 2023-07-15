@@ -26,14 +26,14 @@ namespace Final_project
 
 
             ////Test products 
-            //Product product = new() { Id = 0, ProductName = "w", Price = 1, ProductCategory = 0,  ProductCount = 10};
+            Product product = new() { Id = 0, ProductName = "w", Price = 1, ProductCategory = 0, ProductCount = 10 };
             Product product1 = new() { Id = 5, ProductName = "s", Price = 1, ProductCategory = 0, ProductCount = 10 };
             Product product2 = new() { Id = 6, ProductName = "q", Price = 2, ProductCategory = 0, ProductCount = 20 };
             Product product3 = new() { Id = 7, ProductName = "q", Price = 3, ProductCategory = 0, ProductCount = 30 };
 
 
 
-            //ProductsStorage.Products.Add(product);
+            ProductsStorage.Products.Add(product);
             ProductsStorage.Products.Add(product1);
             ProductsStorage.Products.Add(product2);
             ProductsStorage.Products.Add(product3);

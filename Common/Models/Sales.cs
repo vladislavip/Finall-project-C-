@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace Final_project.Common.Models
@@ -19,6 +21,9 @@ namespace Final_project.Common.Models
         public decimal SaleValue {get; set;}    
         public DateTime SaleDate { get; set;}
 
-        public List<SalesItems> SaleItemsList; 
+        public List<SalesItems> SaleItemsList;
+
+       
+        
     }
 }
