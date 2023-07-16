@@ -27,11 +27,14 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
+                Console.WriteLine("------------------------------------------------------------");
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error occured");
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
                 Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
                 return 0;
+                
             }
 
         }
@@ -53,7 +56,8 @@ namespace Final_project.Services
                 if (products.Count == 0)
 
                 {
-                    Console.WriteLine("No products yet");
+                    Console.WriteLine("No products: ");
+                    Console.WriteLine("------------------------------------------------------------");
                     return;
                 }
 
@@ -70,8 +74,12 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
         }
@@ -85,18 +93,20 @@ namespace Final_project.Services
 
                 if (productAlreadyOnsale is not null)
                     
-                    throw new Exception($"Product with Id: {id} is already on sale , delete is prohibited");
+                    throw new Exception($"Product with Id: {id} is already on sale , delete is prohibited!: ");
+
                 return true;
             }
 
             catch (Exception ex)
             {
+                Console.WriteLine("------------------------------------------------------------");
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error occured");
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
                 Console.ForegroundColor = ConsoleColor.White;
-
                 return false;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
 
@@ -109,17 +119,19 @@ namespace Final_project.Services
                 var existingProduct = ProductsStorage.Products.FirstOrDefault(x => x.Id == productId);
 
                 if (existingProduct is null)
-                    throw new Exception($"Product with ID {productId} not found!");
+                    throw new Exception($"Product with ID {productId} not found!: ");
 
                 ProductsStorage.Products = ProductsStorage.Products.Where(x => x.Id != productId).ToList();
             }
 
             catch (Exception ex)
             {
+                Console.WriteLine("------------------------------------------------------------");
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error occured");
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
                 Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
         }
@@ -131,7 +143,7 @@ namespace Final_project.Services
                 var existingProduct = ProductsStorage.Products.FirstOrDefault(y => y.Id == productId);
 
                 if (existingProduct is null)
-                    throw new Exception($"Product with ID {productId} not found!");
+                    throw new Exception($"Product with ID {productId} not found!: ");
 
                 return existingProduct;
 
@@ -139,9 +151,13 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
                 return null;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
         }
@@ -167,7 +183,8 @@ namespace Final_project.Services
                 if (categoryList.Count == 0)
 
                 {
-                    Console.WriteLine("No products related to this category");
+                    Console.WriteLine("No products related to this category: ");
+                    Console.WriteLine("------------------------------------------------------------");
                     return;
                 }
 
@@ -183,8 +200,12 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
         }
 
@@ -201,7 +222,8 @@ namespace Final_project.Services
                 if (found.Count == 0)
 
                 {
-                    Console.WriteLine("No products in following price range");
+                    Console.WriteLine("No products in following price range: ");
+                    Console.WriteLine("------------------------------------------------------------");
                     return;
                 }
 
@@ -216,8 +238,10 @@ namespace Final_project.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
 
@@ -249,8 +273,12 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
         }
 
@@ -267,7 +295,8 @@ namespace Final_project.Services
                 if (products.Count == 0)
 
                 {
-                    Console.WriteLine("No products yet");
+                    Console.WriteLine("No products: ");
+                    Console.WriteLine("------------------------------------------------------------");
                     return;
                 }
 
@@ -282,8 +311,12 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
         }

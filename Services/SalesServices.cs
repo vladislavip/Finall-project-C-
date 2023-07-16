@@ -1,22 +1,17 @@
 ﻿using ConsoleTables;
 using Final_project.Common.Models;
 using Final_project.Storage_classes;
-using System.Net.WebSockets;
 
 namespace Final_project.Services
 {
 
     internal class SalesServices
     {
-
         public static List<Sales> GetAllSales()
         {
-
             return SalesStorage.Sales;
-
         }
         //Returns sales storage
-
         public static List<SalesItems> GetAllSaleItems()
         {
             return SalesItemStorage.SalesItems;
@@ -26,22 +21,30 @@ namespace Final_project.Services
         {
             try
             {
+                var sales = SalesStorage.Sales; // 
+
                 var saleItems = SalesServices.GetAllSaleItems();
 
-                var table = new ConsoleTable("Sale item ID", "Sale item product", "Sales items count");
+                var table = new ConsoleTable("Sale ID", "Sale item ID", "Sale item product", "Sales items count");
 
                 if (saleItems.Count == 0)
-
+                     
                 {
-                    Console.WriteLine("No Sales items yet or maybe they are all deleted due to return of products");
+                    Console.WriteLine("------------------------------------------------------------");
+                    Console.WriteLine("No Sales items yet or maybe they are all deleted due to return of products: ");
                     return;
                 }
 
 
-                foreach (var items in saleItems)
+                foreach ( var sale in sales) 
                 {
-                    table.AddRow(items.Id, items.SalesItem.ProductName, items.SalesItemCount);
+                    foreach (var items in saleItems)
+                    {
+                        table.AddRow(sale.Id,items.Id, items.SalesItem.ProductName, items.SalesItemCount);
+                    }
+
                 }
+              
 
                 table.Write();
 
@@ -49,22 +52,24 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
-
 
         }
         //Show all sales from storage
-
         public static void GetAllSalesToTable()
         {
             try
             {
-                var sales= SalesStorage.Sales;
+                var sales = SalesStorage.Sales;
 
 
-                var table = new ConsoleTable("Sale Id", "Sale Value", "Sale Items Count", "Sale Item Id", "Product Name", "Product Price","Sale Date");
+                var table = new ConsoleTable("Sale Id", "Sale Value", "Sale Items Count", "Sale Item Id","Sale Item Value", "Product Name", "Product Price", "Sale Date");
 
                 foreach (var sale in sales)
                 {
@@ -72,8 +77,7 @@ namespace Final_project.Services
 
                     foreach (var saleItem in list)
                     {
-                       
-                        table.AddRow(sale.Id, sale.SaleValue, saleItem.SalesItemCount, saleItem.Id, saleItem.SalesItem.ProductName, saleItem.SalesItem.Price, sale.SaleDate);
+                       table.AddRow(sale.Id, sale.SaleValue, saleItem.SalesItemCount, saleItem.Id,saleItem.SalesItemCount*saleItem.SalesItem.Price, saleItem.SalesItem.ProductName, saleItem.SalesItem.Price, sale.SaleDate);
 
                     }
                 }
@@ -84,26 +88,26 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
 
 
         }
         //Shows all sales from storage in table
-
-
         public static void GetAnySaleListToTable(List<Sales> list)
 
         {
-
             try
             {
                 var sales = list;
 
-
-                var table = new ConsoleTable("Sale Id", "Sale Value", "Sale Items Count", "Sale Item Id", "Product Name", "Product Price", "Sale Date");
+                var table = new ConsoleTable("Sale Id", "Sale Value", "Sale Items Count", "Sale Item Id", "Sale Item Value", "Product Name", "Product Price", "Sale Date");
 
                 foreach (var sale in sales)
                 {
@@ -111,13 +115,8 @@ namespace Final_project.Services
 
                     foreach (var saleItem in listprop)
                     {
-
-                        table.AddRow(sale.Id, sale.SaleValue, saleItem.SalesItemCount, saleItem.Id, saleItem.SalesItem.ProductName, saleItem.SalesItem.Price, sale.SaleDate);
-
+                        table.AddRow(sale.Id, sale.SaleValue, saleItem.SalesItemCount, saleItem.Id, saleItem.SalesItemCount * saleItem.SalesItem.Price, saleItem.SalesItem.ProductName, saleItem.SalesItem.Price, sale.SaleDate);
                     }
-
-
-
                 }
 
                 table.Write();
@@ -126,101 +125,150 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
 
         }
         //Any sale list to table
-
-
         public static void GetAnySaleItemsListToTable(List<SalesItems> list)
 
         {
             try
             {
+                var sales = SalesStorage.Sales; // 
+
                 var saleItems = list;
 
-                var table = new ConsoleTable("Sale item ID", "Sale item product", "Sales items count");
+                var table = new ConsoleTable("Sale ID", "Sale item ID", "Sale item product", "Sales items count");
 
                 if (saleItems.Count == 0)
 
                 {
-                    Console.WriteLine("No sales yet");
+                    Console.WriteLine("------------------------------------------------------------");
+                    Console.WriteLine("No Sales items yet or maybe they are all deleted due to return of products: ");
                     return;
                 }
 
 
-                foreach (var items in saleItems)
+                foreach (var sale in sales)
                 {
-                    table.AddRow(items.Id, items.SalesItem.ProductName, items.SalesItemCount);
+                    foreach (var items in saleItems)
+                    {
+                        table.AddRow(sale.Id, items.Id, items.SalesItem.ProductName, items.SalesItemCount);
+                    }
+
                 }
 
+
                 table.Write();
+
             }
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
 
 
         }
         //Any sale items list to table
-
         public static void ListAllSalesAccordingToTimeRange(DateTime startDate, DateTime endDate)
         {
+            try
+            {
+                Console.WriteLine($"Your start date is: {startDate}");
+                Console.WriteLine($"Your end date is: {endDate} ");
 
-            Console.WriteLine($"Your start date is: {startDate}");
-            Console.WriteLine($"Your end date is: {endDate} ");
+                if (startDate > endDate)
+                    throw new InvalidDataException("Start date can not be greater than end date!");
 
-            if (startDate > endDate)
-                throw new InvalidDataException("Start date can not be greater than end date!");
+                var sales = SalesStorage.Sales.Where(x => x.SaleDate >= startDate && x.SaleDate <= endDate).ToList();
 
-            var sales = SalesStorage.Sales.Where(x => x.SaleDate >= startDate && x.SaleDate <= endDate).ToList();
+                if (sales.Count == 0)
+                    Console.WriteLine("No sales at the selected date/period: ");
+                Console.WriteLine("------------------------------------------------------------");
 
-            if (sales.Count == 0)
-                Console.WriteLine("No sales at the selected day");
+                SalesServices.GetAnySaleListToTable(sales);
+            }
 
-            SalesServices.GetAnySaleListToTable(sales);
+            catch (Exception ex)
 
-
-
+            {
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Oops! Got an error!");
+                Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
+            }
         }
-
-
-
+        //Listing sale according to data range , also works with with specific date
         public static void ListAllSalesAccordingToValueRange(decimal lower, decimal upper)
 
         {
-            var sales = SalesStorage.Sales.FindAll(x => x.SaleValue >= lower && x.SaleValue <= upper).ToList();
+            try
+            {
+                var sales = SalesStorage.Sales.FindAll(x => x.SaleValue >= lower && x.SaleValue <= upper).ToList();
 
-            SalesServices.GetAnySaleListToTable(sales);
+                if (sales.Count == 0)
+                {
+                    Console.WriteLine($"No sales betwen {lower} and {upper} price range: ");
+                }
 
+                SalesServices.GetAnySaleListToTable(sales);
+            }
 
-
+            catch (Exception ex)
+            {
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Oops! Got an error!");
+                Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
+            }
         }
-
+        //Sales Value range
         public static void ShowSaleAccordingToSaleId(int id)
         {
-            var sales = SalesStorage.Sales.FindAll(x => x.Id == id).ToList();
+            try
+            {
+                var sales = SalesStorage.Sales.FindAll(x => x.Id == id).ToList();
 
-            if (sales == null)
-                throw new Exception("Sale doesnt exists");
+                if (sales == null)
+                {
+                    throw new Exception($"Sale with id:{id} doesnt exists"); 
+                }
+                   
 
-            Console.WriteLine($"Sale with ID: {id}");
-            SalesServices.GetAnySaleListToTable(sales);
+                Console.WriteLine($"Sale with ID: {id}");
+                SalesServices.GetAnySaleListToTable(sales);
+            }
 
-        } // works
-
+            catch (Exception ex)
+            {
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Oops! Got an error!");
+                Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
+            }
+        } 
+        
     }
-
-
-
-
 }
 
 

@@ -1,4 +1,6 @@
 ﻿using Final_project.Common.Enums;
+using Final_project.Storage_classes;
+using System;
 using System.Collections.Specialized;
 
 namespace Final_project.Services
@@ -9,21 +11,26 @@ namespace Final_project.Services
         public static void MenuAddNewProduct()
         {
             try
-            {
+            { 
                 //Full name check
                 Console.WriteLine("Enter Product Name: ");
+                Console.WriteLine("------------------------------------------------------------");
+
                 var name = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(name))
-                    throw new FormatException("Name is empty!");
+                    throw new FormatException("Name is empty!: ");
 
                 //Full price check
                 Console.WriteLine("Enter Product Price: ");
+                Console.WriteLine("------------------------------------------------------------");
+
                 var price = decimal.Parse(Console.ReadLine());
                 if (price <= 0)
-                    throw new FormatException("Price cannot be zero");
+                    throw new FormatException("Price cannot be zero!: ");
 
                 //Full category check
-                Console.WriteLine("Select Product Category");
+                Console.WriteLine("Select Product Category: ");
+                Console.WriteLine("------------------------------------------------------------");
 
                 int counter = 1;
                 foreach (string i in Enum.GetNames(typeof(ProductCategories)))
@@ -43,11 +50,11 @@ namespace Final_project.Services
 
                 if (isSucces != true || result <= 0 || result > Enum.GetNames(typeof(ProductCategories)).Length)
                 {
-                    throw new Exception("Wrong input of category");
+                    throw new Exception("Wrong input of category: ");
                 }
 
                 if (string.IsNullOrWhiteSpace(category))
-                    throw new FormatException("Category is wrong!");
+                    throw new FormatException("Category input is wrong!: ");
 
 
                 bool isSuccessful
@@ -55,7 +62,8 @@ namespace Final_project.Services
 
                 if (!isSuccessful)
                 { 
-                    throw new InvalidDataException("Category not found!");
+                    throw new InvalidDataException("Category not found!: ");
+
                 }
 
 
@@ -63,21 +71,30 @@ namespace Final_project.Services
 
                 //Full count check
                 Console.WriteLine("Enter the product's count: ");
+                Console.WriteLine("------------------------------------------------------------");
                 var count = int.Parse(Console.ReadLine());
                 if (count <= 0)
-                    throw new FormatException("Price can't be lower than 0!");
+                    throw new FormatException("Count can't be lower than 0!");
 
                 //Calling method to create and add new product to storage
                 int id = ProductsService.AddNewProduct(name.Trim(), price, parsedCategory, count);
                 Console.WriteLine($"Succesfuly added product {id} to database");
+                Console.WriteLine("------------------------------------------------------------");
 
                 //Method calling table for showing products in storage
+                Console.WriteLine("------------------------------------------------------------");
+                Console.WriteLine("Pdoduct storage: ");
                 ProductsService.GetAllProductsToTable();
             }
 
             catch (Exception ex)
             {
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
         }
@@ -85,11 +102,19 @@ namespace Final_project.Services
         public static void MenuChangeProductInfo()
         {
             try
-            {   //Method calling table for showing products in storage
+            {
+                if (ProductsStorage.Products.Count == 0)
+                {
+                    throw new Exception("Product storage is empty");
+                    Console.WriteLine("------------------------------------------------------------");
+                }
+
+                //Method calling table for showing products in storage
                 ProductsService.GetAllProductsToTable();
 
 
                 Console.WriteLine("Select the product by ID you would like to change");
+                Console.WriteLine("------------------------------------------------------------");
                 int id = int.Parse(Console.ReadLine());  //Targeted  product ID
 
                 //Method returning targeted by ID product
@@ -97,13 +122,14 @@ namespace Final_project.Services
 
 
                 //User Menu for changing user property
+               
                 Console.WriteLine("Select which property you would like to change");
                 Console.WriteLine("1.Product Name");
                 Console.WriteLine("2.Product Price");
                 Console.WriteLine("3.Product Category");
                 Console.WriteLine("4.Product Count");
-                Console.WriteLine("5.Change one more ");
-                Console.WriteLine("5.Exit");
+                Console.WriteLine("0.Exit ");
+                Console.WriteLine("------------------------------------------------------------");
 
 
                 int option = int.Parse(Console.ReadLine());
@@ -114,23 +140,31 @@ namespace Final_project.Services
                     case 1:
                         //Check of the property before set
                         Console.WriteLine("Enter New Product Name: ");
+                        Console.WriteLine("------------------------------------------------------------");
+
                         var name = Console.ReadLine();
                         if (string.IsNullOrWhiteSpace(name))
                             throw new FormatException("Name is empty!");
+                      
+
                         product.ProductName = name.Trim();
                         break;
                     case 2:
                         //Check of property before set
                         Console.WriteLine("Enter New Product Price: ");
+                        Console.WriteLine("------------------------------------------------------------");
                         var price = decimal.Parse(Console.ReadLine());
                         if (price <= 0)
-                            throw new Exception("Price can't be lower or equal to zero");
+                            throw new Exception("Price can't be lower or equal to zero!: ");
                         product.Price = price;
                         break;
                     case 3:
 
                         Console.WriteLine("Select New Product Category: ");
-                        int counter = 1;
+                        Console.WriteLine("------------------------------------------------------------");
+
+
+                        int counter = 1;   // counter for listing product category
                         foreach (string i in Enum.GetNames(typeof(ProductCategories)))
 
                         {
@@ -152,26 +186,36 @@ namespace Final_project.Services
                         break;
                     case 4:
                         Console.WriteLine("Enter the updated product's count: ");
+                        Console.WriteLine("------------------------------------------------------------");
+
                         var count = int.Parse(Console.ReadLine());
                         if (count < 0)
                             throw new Exception("Count cant be lower than zero ");
+
                         product.ProductCount = count;
                         break;
-                    case 5:
+                    case 0:
                         Console.WriteLine("Exiting");
+                        Console.WriteLine("------------------------------------------------------------");
                         break;
                     default:
-                        Console.WriteLine("Option Doesnt exist, exiting");
+                        Console.WriteLine("Option doesnt exist, exiting: ");
+                        Console.WriteLine("------------------------------------------------------------");
                         break;
                 }
+                Console.WriteLine("------------------------------------------------------------");
+                Console.WriteLine("Updated product storage: ");
                 ProductsService.GetAllProductsToTable();
             }
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
-
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
 
@@ -181,8 +225,19 @@ namespace Final_project.Services
         {
             try
             {
+
+                if (ProductsStorage.Products.Count == 0)
+                {
+                    throw new Exception("Product storage is empty: ");
+                    Console.WriteLine("------------------------------------------------------------");
+                }
+
+                Console.WriteLine("------------------------------------------------------------");
+                Console.WriteLine("List of products: ");
                 ProductsService.GetAllProductsToTable();
+
                 Console.WriteLine("Write product ID you would like to delete: ");
+                Console.WriteLine("------------------------------------------------------------");
 
                 int id;
 
@@ -205,8 +260,12 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
         }
 
@@ -221,6 +280,12 @@ namespace Final_project.Services
         {
             try
             {
+                if (ProductsStorage.Products.Count == 0)
+                {
+                    throw new Exception("Product storage is empty");
+                    Console.WriteLine("------------------------------------------------------------");
+                }
+
                 Console.WriteLine("Select Product Category");
 
                 int counter = 1;
@@ -257,7 +322,8 @@ namespace Final_project.Services
                 }
 
 
-                //Calling method
+                Console.WriteLine("------------------------------------------------------------");
+                Console.WriteLine("Listing existing categories: ");
                 ProductsService.ShowProductsInCattegory(category);
 
 
@@ -266,8 +332,12 @@ namespace Final_project.Services
             catch (Exception ex)
 
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
         }
@@ -276,12 +346,26 @@ namespace Final_project.Services
         {
             try
             {
-                Console.WriteLine("Enter lower price boundary");
+                if (ProductsStorage.Products.Count == 0)
+                {
+                    throw new Exception("Product storage is empty");
+                    
+                }
+
+                Console.WriteLine("------------------------------------------------------------");
+                Console.WriteLine("Products list: ");
+                ProductsService.GetAllProductsToTable();
+
+
+                Console.WriteLine("Enter lower price boundary: ");
+                Console.WriteLine("------------------------------------------------------------");
                 decimal lowerBoundary = decimal.Parse(Console.ReadLine());
                 if (lowerBoundary < 0)
                     throw new Exception("Lower boundary cant be lower than 0");
 
                 Console.WriteLine("Enter upper price boundary");
+                Console.WriteLine("------------------------------------------------------------");
+
                 decimal upperBoundary = decimal.Parse(Console.ReadLine());
                 if (upperBoundary > int.MaxValue)
                     throw new Exception($"Upper boundary cant be higher than {int.MaxValue}");
@@ -290,18 +374,28 @@ namespace Final_project.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
 
             }
-
         }
 
         public static void MenuSearchProductByName()
         {
             try
             {
+                if (ProductsStorage.Products.Count == 0)
+                {
+                    throw new Exception("Product storage is empty");
+                    Console.WriteLine("------------------------------------------------------------");
+                }
+
                 Console.WriteLine("Enter the product search keyword: ");
+                Console.WriteLine("------------------------------------------------------------");
                 string searchWord = Console.ReadLine().Trim(); // Trimmed
                 if (string.IsNullOrWhiteSpace(searchWord))
                     throw new FormatException("Name is empty!");
@@ -311,8 +405,12 @@ namespace Final_project.Services
             catch (Exception ex)
 
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
         }

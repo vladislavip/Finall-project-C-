@@ -15,7 +15,15 @@ namespace Final_project.Services
             try
             {
             Start:
+
                 ProductsService.GetAllProductsToTable();
+
+                if (ProductsStorage.Products.Count == 0)
+                {
+                    throw new Exception("Product storage is empty");
+                    Console.WriteLine("------------------------------------------------------------");
+                }
+
                 Console.WriteLine("Enter (ID) Product  that will become sale item: ");
                 Console.WriteLine("------------------------------------------------------------");
 
@@ -23,19 +31,19 @@ namespace Final_project.Services
                 bool isSuccesfullParseProductId = int.TryParse(idString, out int id);
                 if (isSuccesfullParseProductId == false)
                 {
-                    Console.WriteLine("Do again");
+                    Console.WriteLine("Input error, try again: ");
+                    Console.WriteLine("------------------------------------------------------------");
                     goto Start;
                 }
 
 
-
                 var existingProduct = ProductsStorage.Products.Find(x => x.Id == id);
 
-               
 
                 if (existingProduct == null)
                 {
-                    Console.WriteLine("Do again");
+                    Console.WriteLine("Product not found,try again: ");
+                    Console.WriteLine("------------------------------------------------------------");
                     goto Start;
                 }
 
@@ -60,7 +68,7 @@ namespace Final_project.Services
                 if (count == 0 || count < 0)
                 {
 
-                    Console.WriteLine("Count cant be zero , you wil be returned to Id input ");
+                    Console.WriteLine("Count cant be zero , you wil be returned to Id input: ");
                     Console.WriteLine("------------------------------------------------------------");
                     goto Start;
                 }
@@ -82,7 +90,7 @@ namespace Final_project.Services
                 {
 
                     Console.WriteLine($"Product {existingProduct.ProductName} is out from stock");
-
+                    Console.WriteLine("------------------------------------------------------------");
                 }
 
                 //----------------------------------------Sales item generation---------------------------------------------
@@ -95,14 +103,12 @@ namespace Final_project.Services
                 }
 
 
-
-
                 SalesItemStorage.SalesItems.Add(salesItem);
                 tempList.Add(salesItem);
 
-
-                ProductsService.GetAllProductsToTable();
-                SalesServices.GetAllSaleItemsToTable();
+                Console.WriteLine("List of products that will be transfered to sale: ");
+                //ProductsService.GetAllProductsToTable();
+                //SalesServices.GetAllSaleItemsToTable();
                 SalesServices.GetAnySaleItemsListToTable(tempList);
 
                 Console.WriteLine("Do you want to add one more product to sales list?");
@@ -152,9 +158,12 @@ namespace Final_project.Services
 
                 SalesStorage.Sales.Add(sale);
 
-                Console.WriteLine($"Sale with Id: {sale.Id}succesfuly thadded");
+                Console.WriteLine($"Sale with Id:{sale.Id} succesfuly added: ");
+                Console.WriteLine("------------------------------------------------------------");
                 SalesServices.GetAllSalesToTable();
 
+
+                //-------------------------------------------Test area----------------------------------------------------
 
                 if (isTest)
                 {
@@ -184,11 +193,14 @@ namespace Final_project.Services
 
             }
 
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-
-
-                Console.WriteLine(Ex.Message);
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
+                Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
 
             }
 
@@ -201,6 +213,13 @@ namespace Final_project.Services
             try
             {
             Start:
+
+                if (SalesStorage.Sales.Count == 0)        //Check this code
+                    throw new Exception("No sales yet or all sales are deleted!:");
+                Console.WriteLine("------------------------------------------------------------");
+
+                Console.WriteLine("------------------------------------------------------------");
+                Console.WriteLine("List of all sales items: ");
                 SalesServices.GetAllSaleItemsToTable();
 
 
@@ -210,12 +229,13 @@ namespace Final_project.Services
                 string idString = Console.ReadLine();                                   //ID filter
                 bool isSuccesfullParseSalesId = int.TryParse(idString, out int id);
                 if (isSuccesfullParseSalesId == false)
-                    throw new Exception("Wrong ID input");
+                    throw new Exception("Wrong ID input: ");
 
                 var existingSaleitems = SalesItemStorage.SalesItems.FirstOrDefault(x => x.Id == id);
                 if (existingSaleitems == null)
                 {
-                    throw new Exception("Id doesn't exist");
+                    Console.WriteLine("------------------------------------------------------------");
+                    throw new Exception($"Id{id} doesn't exist: ");
                 }
 
                 Console.WriteLine("Input the quantity you want you want to return ");
@@ -230,7 +250,6 @@ namespace Final_project.Services
                 //------------------Count filter--------------------------------------------------
                 if (count == 0 || count < 0)
                 {
-
                     Console.WriteLine("Count cant be zero , you wil be returned to start");
                     Console.WriteLine("------------------------------------------------------------");
                     goto Start;
@@ -258,16 +277,16 @@ namespace Final_project.Services
 
                 if (exisitngSale == null)
                     throw new Exception("Sale doesn't contain following sale item ");
-                Console.WriteLine("------------------------------------------------------------");
 
 
 
-                exisitngSale.SaleValue -= existingSaleitems.SalesItem.Price * count;     //Decresing sales value
+
+                exisitngSale.SaleValue -= existingSaleitems.SalesItem.Price * count;     //Decreasing sales value
 
 
-                //---------------Storage cleaners--------------------------------------------
+                //---------------Storage cleaners---------------------------------------------------------------------
 
-                exisitngSale.SaleItemsList.Remove(existingSaleitems);  //Decresing sales items count
+                exisitngSale.SaleItemsList.Remove(existingSaleitems);  //Decreasing sales items count
 
 
                 if (exisitngSale.SaleValue == 0)
@@ -275,7 +294,6 @@ namespace Final_project.Services
                     exisitngSale.SaleItemsList.Clear();
 
                 }
-
 
                 // Cleaning sale's sales items to make count field in table =0 , sale will be remaing but with 0 count and 0 value as the record
 
@@ -285,18 +303,34 @@ namespace Final_project.Services
 
                 }
 
+                //Cleaning the Sale storage - ******thoroughly DeBug !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                if (exisitngSale.SaleValue == 0)
+
+                {
+                    Console.WriteLine("------------------------------------------------------------");
+                    Console.WriteLine($"ATTENTION sale with id:{exisitngSale.Id}, will be deleted , due to full return of its sales items: ");
+                    SalesStorage.Sales.Remove(exisitngSale);
 
 
+                }
 
                 //----------------------------------------------------------------------------------------------
-                Console.WriteLine("Updated sale items list");
-                Console.WriteLine("------------------------------------------------------------");
-                SalesServices.GetAllSaleItemsToTable();
 
-                Console.WriteLine("Products succsesfuly returned from sale");
+                Console.WriteLine("Products  returning....");
+                Thread.Sleep(1000);
+                Console.WriteLine("Done");
+                Console.WriteLine("------------------------------------------------------------");
+
+
+                Console.WriteLine("Updated Products storage: ");
                 Console.WriteLine("------------------------------------------------------------");
                 ProductsService.GetAllProductsToTable();
 
+
+                Console.WriteLine("Updated Sale storage: ");
+                Console.WriteLine("------------------------------------------------------------");
+                SalesServices.GetAllSalesToTable();
 
 
                 if (isTest)
@@ -324,14 +358,17 @@ namespace Final_project.Services
 
                 }
 
-
             }
 
             catch (Exception ex)
 
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
 
             }
 
@@ -340,7 +377,9 @@ namespace Final_project.Services
         {
             try
             {
-
+                if (SalesStorage.Sales.Count == 0)
+                    throw new Exception("No sales yet or all sales are deleted!:");
+                Console.WriteLine("------------------------------------------------------------");
 
                 SalesServices.GetAllSalesToTable();
 
@@ -349,7 +388,8 @@ namespace Final_project.Services
                 string saleIdString = Console.ReadLine();
                 bool isSuccesfullParseSalesId = int.TryParse(saleIdString, out int id);
                 if (isSuccesfullParseSalesId == false)
-                    throw new Exception("Wrong sale id input");
+                    throw new Exception("Wrong sale id input: ");
+
 
 
                 var existingSale = SalesStorage.Sales.FirstOrDefault(x => x.Id == id);
@@ -357,12 +397,15 @@ namespace Final_project.Services
                 if (existingSale == null)
                     throw new Exception($"Sale with Id: {id}  does not exists");
 
+
                 if (existingSale.SaleValue == 0 && existingSale.SaleItemsList.Count == 0)
                     throw new Exception($"sale with Id:{id} was already returned");
 
+
                 var salesItemsList = existingSale.SaleItemsList;
 
-                Console.WriteLine("Foloowing sale items will be returned from sale");
+                Console.WriteLine("Following sale items will be returned from sale: ");
+                Console.WriteLine("------------------------------------------------------------");
                 SalesServices.GetAnySaleItemsListToTable(salesItemsList);
 
 
@@ -377,17 +420,37 @@ namespace Final_project.Services
 
                 }
 
+                Console.WriteLine("Sale  deleting....");
+                Thread.Sleep(1000);
+                Console.WriteLine("Done");
+                Console.WriteLine("------------------------------------------------------------");
+
+
                 existingSale.SaleValue = 0;
 
                 existingSale.SaleItemsList.Clear();    //cleaning list of sale items for existing sale that will be deleted
+                if (existingSale.SaleValue == 0)
+
+                {
+
+
+                    Console.WriteLine("------------------------------------------------------------");
+                    Console.WriteLine($"ATTENTION sale with id:{existingSale.Id}, will be deleted , due to full return of its sales items: ");
+                    SalesStorage.Sales.Remove(existingSale);
+
+
+                }
 
                 Console.WriteLine("Products were succesfuly returned: ");
                 Console.WriteLine("------------------------------------------------------------");
                 ProductsService.GetAllProductsToTable();
-                Console.WriteLine( "Your list of sales");
+                Console.WriteLine("Your list of sales: ");
                 Console.WriteLine("------------------------------------------------------------");
                 SalesServices.GetAllSalesToTable();
 
+                ProductsService.GetAllProductsToTable();
+
+                //-----------------------------------------Test area-------------------------------------------------------------------
                 if (isTest)
                 {
 
@@ -415,8 +478,12 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
         }
@@ -424,43 +491,45 @@ namespace Final_project.Services
         {
             SalesServices.GetAllSalesToTable();   // Works
 
-
         }   // Works
         public static void MenuListAllSalesAccordingToDateRange()  // Works
         {
             try
             {
 
-                Console.WriteLine("Enter the starting date");
 
 
-                Console.WriteLine("Enter sale's date (dd/MM/yyyy) : ");
+                Console.WriteLine("Enter sale's range start date (dd/MM/yyyy): ");
+                Console.WriteLine("------------------------------------------------------------");
                 DateTime startDate = DateTime.ParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
                 Console.WriteLine("Enter the ending date");
 
-                Console.WriteLine("Enter sale's date (dd/MM/yyyy) : ");
+                Console.WriteLine("Enter sale's range  end date (dd/MM/yyyy): ");
+                Console.WriteLine("------------------------------------------------------------");
                 DateTime endDate = DateTime.ParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
                 endDate = endDate.AddDays(1).AddSeconds(-1);
 
-                if (startDate >= DateTime.Now || endDate >= DateTime.Now.AddDays(2).AddSeconds(-1)) 
+                if (startDate >= DateTime.Now || endDate >= DateTime.Now.AddDays(2).AddSeconds(-1))
                 {
-                    throw new Exception("Wrong date input");
+                    Console.WriteLine("------------------------------------------------------------");
+                    throw new Exception("Wrong date input, Start date can't be higher or equal to End date!: ");
+
                 }
 
                 SalesServices.ListAllSalesAccordingToTimeRange(startDate, endDate);
 
                 if (startDate > endDate)
-                    throw new InvalidDataException("Start date can not be greater than end date!");
+                    throw new InvalidDataException("Start date can not be greater than end date!: ");
             }
 
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
-                Console.WriteLine( ex.Message);
-
-
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
+                Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
             }
 
         }
@@ -469,19 +538,21 @@ namespace Final_project.Services
             try
             {
 
-                Console.WriteLine("Enter the lower value");
+                Console.WriteLine("Enter the lower value of sale value: ");
+                Console.WriteLine("------------------------------------------------------------");
                 string lowerValue = Console.ReadLine();
                 bool isSuccesfullParsestringLower = decimal.TryParse(lowerValue, out decimal lower);
                 if (isSuccesfullParsestringLower == false)
-                    throw new Exception("Wrong  input");
-                Console.WriteLine("------------------------------------------------------------");
+                    throw new Exception("Wrong sale value input: ");
 
-                Console.WriteLine("Enter the upper value");
+
+                Console.WriteLine("Enter the upper value of sale value: ");
+                Console.WriteLine("------------------------------------------------------------");
                 string upperValue = Console.ReadLine();
                 bool isSuccesfullParsestringUper = decimal.TryParse(upperValue, out decimal upper);
                 if (isSuccesfullParsestringUper == false)
-                    throw new Exception("Wrong  input");
-                Console.WriteLine("------------------------------------------------------------");
+                    throw new Exception("Wrong sale value input: ");
+
 
                 if (lower < 0 || upper < 0 || lower > upper || lower == upper)
                     throw new Exception("Wrong values input");
@@ -493,8 +564,12 @@ namespace Final_project.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
 
@@ -505,6 +580,7 @@ namespace Final_project.Services
             try
             {
                 Console.WriteLine("Enter sale's date (dd/MM/yyyy) : ");
+                Console.WriteLine("------------------------------------------------------------");
                 DateTime date = DateTime.ParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
 
@@ -516,7 +592,7 @@ namespace Final_project.Services
 
                 DateTime DateStart = date.AddSeconds(1);
                 DateTime DateEnd = date.AddDays(1).AddSeconds(-1);
-               
+
 
                 SalesServices.ListAllSalesAccordingToTimeRange(DateStart, DateEnd);
 
@@ -524,9 +600,12 @@ namespace Final_project.Services
             catch (Exception ex)
 
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
-
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
             }
 
 
@@ -538,6 +617,7 @@ namespace Final_project.Services
             try
             {
                 Console.WriteLine("List of all sales");
+                Console.WriteLine("------------------------------------------------------------");
                 SalesServices.GetAllSalesToTable();
                 Console.WriteLine("------------------------------------------------------------");
 
@@ -554,14 +634,14 @@ namespace Final_project.Services
             catch (Exception ex)
 
             {
-                Console.WriteLine("Error occured");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured!");
                 Console.WriteLine(ex.Message);
-
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("------------------------------------------------------------");
 
             }
-
-
-
 
 
         } //works
