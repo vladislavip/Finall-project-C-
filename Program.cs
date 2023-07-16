@@ -6,7 +6,7 @@ namespace Final_project
 {
 
     //delegate List<Product> ProductUpdateDelegate();
-    
+
     internal class Program
     {
         static void Main(string[] args)
@@ -25,39 +25,26 @@ namespace Final_project
             SalesStorage salesStorage = new SalesStorage();
 
 
-            ////Test products 
-            Product product = new() { Id = 0, ProductName = "w", Price = 1, ProductCategory = 0, ProductCount = 10 };
-            Product product1 = new() { Id = 5, ProductName = "s", Price = 1, ProductCategory = 0, ProductCount = 10 };
-            Product product2 = new() { Id = 6, ProductName = "q", Price = 2, ProductCategory = 0, ProductCount = 20 };
-            Product product3 = new() { Id = 7, ProductName = "q", Price = 3, ProductCategory = 0, ProductCount = 30 };
+
+            if (SalesMenu.isTest)
+            {
+
+                ////Test products 
+                Product product = new() { ProductName = "Coffe", Price = 1, ProductCategory = 0, ProductCount = 10 };
+                Product product1 = new() { ProductName = "Tea", Price = 1, ProductCategory = 0, ProductCount = 10 };
+                Product product2 = new() { ProductName = "Juice", Price = 2, ProductCategory = 0, ProductCount = 20 };
+                Product product3 = new() { ProductName = "Soda", Price = 3, ProductCategory = 0, ProductCount = 40 };
 
 
 
-            ProductsStorage.Products.Add(product);
-            ProductsStorage.Products.Add(product1);
-            ProductsStorage.Products.Add(product2);
-            ProductsStorage.Products.Add(product3);
-            //Test products
+                ProductsStorage.Products.Add(product);
+                ProductsStorage.Products.Add(product1);
+                ProductsStorage.Products.Add(product2);
+                ProductsStorage.Products.Add(product3);
+                //Test products
 
-            //Test Sale items
+            }
 
-            //SalesItems salesItems = new() { Id = 0, SalesItem = product, SalesItemCount = 10 };
-            //SalesItems salesItems1 = new() { Id = 1, SalesItem = product1, SalesItemCount = 20 };
-            //SalesItems salesItems2 = new() { Id = 2, SalesItem = product2, SalesItemCount = 20 };
-
-            //SalesItemStorage.SalesItems.Add(salesItems);
-            //SalesItemStorage.SalesItems.Add(salesItems1);
-            //SalesItemStorage.SalesItems.Add(salesItems2);
-            ////Test Sale items
-
-            //Sales sale = new() { Id = 1, SaleDate = DateTime.Now, SaleItemsList = new List<SalesItems> { salesItems, salesItems1, salesItems2 } };
-
-
-            //Delegates
-            //ProductUpdateDelegate productUpdateDelegate;
-            //productUpdateDelegate = ProductsService.GetAllProducts();
-
-               bool dde = true;
 
 
 
@@ -68,6 +55,7 @@ namespace Final_project
             {
                 Console.WriteLine("1.Do operation(s) on products");
                 Console.WriteLine("2.Do operation(s) on sales");
+                Console.WriteLine("3.Read project functionality description");
                 Console.WriteLine("0.Exit system");
 
                 Console.WriteLine("Enter option");
@@ -78,7 +66,7 @@ namespace Final_project
                     Console.WriteLine("Enter option");
                 }
 
-                switch(option) 
+                switch (option)
                 {
                     case 1:
 
@@ -88,14 +76,26 @@ namespace Final_project
                         SubMenuHelper.SalesSubMenu();
                         break;
                     case 3:
-                        Console.WriteLine("Shutting down");
+                        Console.WriteLine("1.Sales are always remain in database as the record , even if all sale items returned they will be still listed in tables and reports ,however my program doesnt allows to return anything " +
+                            "from already empty sale (with 0 sale items count and 0 value");
+                        Console.WriteLine("2.Sale items are deleted  if their item count==0, e.g if all products from sale item is returned , sale item deleted from storage");
+                        Console.WriteLine("3.Sale items count in table (For sales table) is number of sales items per each sale , e.g   products are converted to sale items (kind of basket) and sale items count is" +
+                            " the number f following basket with products");
+                        Console.WriteLine("If you want test if program storages are working fine turn on SalesMenu.isTest=true ");
+
+                        Console.WriteLine("Press any key to exit");
+
+                        Console.ReadKey();
                         break;
+
                     default:
                         Console.WriteLine("Option doesn't exist");
                         break;
+
+
                 }
             }
-            while (option!=0);
+            while (option != 0);
         }
     }
 }

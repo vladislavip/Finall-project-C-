@@ -2,13 +2,6 @@
 using Final_project.Common.Enums;
 using Final_project.Common.Models;
 using Final_project.Storage_classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Final_project.Services
 {
@@ -198,7 +191,7 @@ namespace Final_project.Services
             }
         }
 
-        public static void SearchProductByName(string productName) 
+        public static void SearchProductByName(string productName)
         {
             try
             {
@@ -228,11 +221,11 @@ namespace Final_project.Services
             {
                 Console.WriteLine("Error occured");
                 Console.WriteLine(ex.Message);
-            } 
+            }
         }
 
-        public static void GetAnyProductListToTabe(List <Product> productsList) 
-        
+        public static void GetAnyProductListToTabe(List<Product> productsList)
+
         {
             try
             {
@@ -262,8 +255,8 @@ namespace Final_project.Services
                 Console.WriteLine("Error occured");
                 Console.WriteLine(ex.Message);
             }
-            
+
         }
 
-    } 
+    }
 }

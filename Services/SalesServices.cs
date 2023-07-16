@@ -7,7 +7,7 @@ namespace Final_project.Services
 
     internal class SalesServices
     {
-        
+
         public static List<Sales> GetAllSales()
         {
 
@@ -32,7 +32,7 @@ namespace Final_project.Services
                 if (saleItems.Count == 0)
 
                 {
-                    Console.WriteLine("No sales yet");
+                    Console.WriteLine("No Sales items yet or maybe they are all deleted due to return of products");
                     return;
                 }
 
@@ -169,13 +169,19 @@ namespace Final_project.Services
 
         public static void ListAllSalesAccordingToTimeRange(DateTime startDate, DateTime endDate)
         {
+
             endDate = endDate.AddDays(1).AddSeconds(-1);
+
+            Console.WriteLine($"Your start date is: {startDate}");
+            Console.WriteLine($"Your end date is: {endDate} ");
 
             if (startDate > endDate)
                 throw new InvalidDataException("Start date can not be greater than end date!");
 
             var sales = SalesStorage.Sales.Where(x => x.SaleDate >= startDate && x.SaleDate <= endDate).ToList();
 
+            if (sales.Count == 0)
+                Console.WriteLine("No sales at the selected day");
 
             SalesServices.GetAnySaleListToTable(sales);
 
@@ -188,7 +194,7 @@ namespace Final_project.Services
         public static void ListAllSalesAccordingToValueRange(decimal lower, decimal upper)
 
         {
-            var sales = SalesStorage.Sales.FindAll(x => x.SaleValue >= lower && x.SaleValue <= upper ).ToList();
+            var sales = SalesStorage.Sales.FindAll(x => x.SaleValue >= lower && x.SaleValue <= upper).ToList();
 
             SalesServices.GetAnySaleListToTable(sales);
 
@@ -197,8 +203,8 @@ namespace Final_project.Services
         }
 
         public static void ShowSaleAccordingToSaleId(int id)
-        { 
-           var sales =  SalesStorage.Sales.FindAll(x=>x.Id == id).ToList();
+        {
+            var sales = SalesStorage.Sales.FindAll(x => x.Id == id).ToList();
 
             if (sales == null)
                 throw new Exception("Sale doesnt exists");
@@ -206,8 +212,8 @@ namespace Final_project.Services
             Console.WriteLine($"Sale with ID: {id}");
             SalesServices.GetAnySaleListToTable(sales);
 
-        }
-        
+        } // works
+
     }
 
 
@@ -219,7 +225,7 @@ namespace Final_project.Services
 
 
 
-    
+
 
 
 
