@@ -1,11 +1,12 @@
-﻿using Final_project.Common.Enums;
+﻿using Final_project.Abstract;
+using Final_project.Common.Enums;
 using Final_project.Storage_classes;
 using System;
 using System.Collections.Specialized;
 
 namespace Final_project.Services
 {
-    internal class ProductsMenu
+    internal class ProductsMenu:IproductMenu
     {
 
         public static void MenuAddNewProduct()

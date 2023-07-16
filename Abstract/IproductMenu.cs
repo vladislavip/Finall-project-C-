@@ -1,12 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Final_project.Abstract
+﻿namespace Final_project.Abstract
 {
     internal interface IproductMenu
     {
+
+        public static void MenuAddNewProduct()
+        {
+
+        }
+
+        public static void MenuChangeProductInfo()
+        {
+
+        }
+
+        public static void MenuDeleteProduct()
+        {
+
+        }
+
+        public static void MenuShowAllProducts()
+        {
+
+        }
+
+        public static void MenuShowAllProductsByCategory()
+        {
+
+        }
+
+        public static void MenuShowAllProductsByPriceRange()
+        {
+
+        }
+
+        public static void MenuSearchProductByName()
+        {
+
+        }
     }
 }

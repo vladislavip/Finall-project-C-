@@ -1,10 +1,11 @@
-﻿using Final_project.Common.Models;
+﻿using Final_project.Abstract;
+using Final_project.Common.Models;
 using Final_project.Storage_classes;
 using System.Globalization;
 
 namespace Final_project.Services
 {
-    internal class SalesMenu
+    internal class SalesMenu:ISalesMenu
     {
         public static bool isTest = false;
 
