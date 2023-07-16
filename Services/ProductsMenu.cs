@@ -1,4 +1,5 @@
 ﻿using Final_project.Common.Enums;
+using System.Collections.Specialized;
 
 namespace Final_project.Services
 {
@@ -53,7 +54,7 @@ namespace Final_project.Services
               = Enum.TryParse(typeof(ProductCategories), category, true, out object parsedCategory);
 
                 if (!isSuccessful)
-                {
+                { 
                     throw new InvalidDataException("Category not found!");
                 }
 
@@ -183,8 +184,22 @@ namespace Final_project.Services
                 ProductsService.GetAllProductsToTable();
                 Console.WriteLine("Write product ID you would like to delete: ");
 
-                int id = int.Parse(Console.ReadLine());
-                ProductsService.RemoveProduct(id);
+                int id;
+
+                string idString =Console.ReadLine();
+
+                bool idIsParsed=int.TryParse(idString, out id);
+
+                if (!idIsParsed)
+                    throw new Exception("Wrong ID input)");
+
+                
+
+                if (ProductsService.ProhibitDeletingProductThatAlreadyTransferedToSale(id)==true) 
+                {
+                    ProductsService.RemoveProduct(id);
+                }
+             
                 ProductsService.GetAllProductsToTable();
             }
 

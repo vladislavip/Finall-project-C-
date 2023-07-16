@@ -27,8 +27,10 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error occured");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
                 return 0;
             }
 
@@ -74,6 +76,32 @@ namespace Final_project.Services
 
         }
 
+        public static bool ProhibitDeletingProductThatAlreadyTransferedToSale (int id)    //If sale item exist , product related to this sale item is prohibited to delete 
+
+        {
+            try
+            {
+                var productAlreadyOnsale = SalesItemStorage.SalesItems.Find(x=>x.Id == id);
+
+                if (productAlreadyOnsale is not null)
+                    
+                    throw new Exception($"Product with Id: {id} is already on sale , delete is prohibited");
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error occured");
+                Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+
+                return false;
+            }
+
+
+        }
+
         public static void RemoveProduct(int productId)
         {
             try
@@ -88,8 +116,10 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error occured");
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
             }
 
         }

@@ -69,7 +69,6 @@ namespace Final_project
                 switch (option)
                 {
                     case 1:
-
                         SubMenuHelper.ProductSubMenu();
                         break;
                     case 2:
@@ -79,8 +78,8 @@ namespace Final_project
                         Console.WriteLine("1.Sales are always remain in database as the record , even if all sale items returned they will be still listed in tables and reports ,however my program doesnt allows to return anything " +
                             "from already empty sale (with 0 sale items count and 0 value");
                         Console.WriteLine("2.Sale items are deleted  if their item count==0, e.g if all products from sale item is returned , sale item deleted from storage");
-                        Console.WriteLine("3.Sale items count in table (For sales table) is number of sales items per each sale , e.g   products are converted to sale items (kind of basket) and sale items count is" +
-                            " the number f following basket with products");
+                        Console.WriteLine("3.Search by  by time range  is working as following , Start date (dd/mm/yyyy 00:00:01  End date (dd/mm/yyy 23:59:59), eg all sales wil be shown  within  " +
+                            "Start Date mm/dd/2023 00:00:01  and end datew  mm/dd/2023 23:59:59)");
                         Console.WriteLine("If you want test if program storages are working fine turn on SalesMenu.isTest=true ");
 
                         Console.WriteLine("Press any key to exit");

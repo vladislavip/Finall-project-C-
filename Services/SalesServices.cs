@@ -1,6 +1,7 @@
 ﻿using ConsoleTables;
 using Final_project.Common.Models;
 using Final_project.Storage_classes;
+using System.Net.WebSockets;
 
 namespace Final_project.Services
 {
@@ -60,28 +61,25 @@ namespace Final_project.Services
         {
             try
             {
-                var sales = SalesServices.GetAllSales();
+                var sales= SalesStorage.Sales;
 
 
-
-                var table = new ConsoleTable("Sale ID", "Sale Value", "Sale Date", "Sale Items Count");
-
-                if (sales.Count == 0)
-
-                {
-                    Console.WriteLine("No sales yet");
-                    return;
-                }
-
-
+                var table = new ConsoleTable("Sale Id", "Sale Value", "Sale Items Count", "Sale Item Id", "Product Name", "Product Price","Sale Date");
 
                 foreach (var sale in sales)
                 {
+                    var list = sale.SaleItemsList;
 
-                    table.AddRow(sale.Id, sale.SaleValue, sale.SaleDate, sale.SaleItemsList.Count);
+                    foreach (var saleItem in list)
+                    {
+                       
+                        table.AddRow(sale.Id, sale.SaleValue, saleItem.SalesItemCount, saleItem.Id, saleItem.SalesItem.ProductName, saleItem.SalesItem.Price, sale.SaleDate);
+
+                    }
                 }
 
                 table.Write();
+
             }
 
             catch (Exception ex)
@@ -99,26 +97,31 @@ namespace Final_project.Services
         public static void GetAnySaleListToTable(List<Sales> list)
 
         {
+
             try
             {
                 var sales = list;
 
-                var table = new ConsoleTable("Sale ID", "Sale Date", "Sale Value", "Sale Items Count");
 
-                if (sales.Count == 0)
-
-                {
-                    Console.WriteLine("No sales yet");
-                    return;
-                }
-
+                var table = new ConsoleTable("Sale Id", "Sale Value", "Sale Items Count", "Sale Item Id", "Product Name", "Product Price", "Sale Date");
 
                 foreach (var sale in sales)
                 {
-                    table.AddRow(sale.Id, sale.SaleDate, sale.SaleValue, sale.SaleItemsList.Count);
+                    var listprop = sale.SaleItemsList;
+
+                    foreach (var saleItem in listprop)
+                    {
+
+                        table.AddRow(sale.Id, sale.SaleValue, saleItem.SalesItemCount, saleItem.Id, saleItem.SalesItem.ProductName, saleItem.SalesItem.Price, sale.SaleDate);
+
+                    }
+
+
+
                 }
 
                 table.Write();
+
             }
 
             catch (Exception ex)
@@ -126,6 +129,7 @@ namespace Final_project.Services
                 Console.WriteLine("Error occured");
                 Console.WriteLine(ex.Message);
             }
+
 
         }
         //Any sale list to table
@@ -169,8 +173,6 @@ namespace Final_project.Services
 
         public static void ListAllSalesAccordingToTimeRange(DateTime startDate, DateTime endDate)
         {
-
-            endDate = endDate.AddDays(1).AddSeconds(-1);
 
             Console.WriteLine($"Your start date is: {startDate}");
             Console.WriteLine($"Your end date is: {endDate} ");

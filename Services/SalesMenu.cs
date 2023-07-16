@@ -6,7 +6,7 @@ namespace Final_project.Services
 {
     internal class SalesMenu
     {
-        public static bool isTest = true;
+        public static bool isTest = false;
 
 
         public static void MenuAddNewSale()
@@ -31,6 +31,7 @@ namespace Final_project.Services
 
                 var existingProduct = ProductsStorage.Products.Find(x => x.Id == id);
 
+               
 
                 if (existingProduct == null)
                 {
@@ -55,19 +56,18 @@ namespace Final_project.Services
                 Console.WriteLine("------------------------------------------------------------");
 
 
-
                 //-----------------------Filtering input------------------------------------------------
                 if (count == 0 || count < 0)
                 {
 
-                    Console.WriteLine("Count cant be zero , you wil be returned to INPUT START==> ");
+                    Console.WriteLine("Count cant be zero , you wil be returned to Id input ");
                     Console.WriteLine("------------------------------------------------------------");
                     goto Start;
                 }
 
                 if (existingProduct.ProductCount - count < 0)
                 {
-                    Console.WriteLine("Count cant be more than product count , you will be returned to INPUT START==> ");
+                    Console.WriteLine("Count cant be more than product count , you will be returned to Id ");
                     Console.WriteLine("------------------------------------------------------------");
                     goto Start;
 
@@ -152,7 +152,7 @@ namespace Final_project.Services
 
                 SalesStorage.Sales.Add(sale);
 
-                Console.WriteLine("Sale succesfuly added");
+                Console.WriteLine($"Sale with Id: {sale.Id}succesfuly thadded");
                 SalesServices.GetAllSalesToTable();
 
 
@@ -194,7 +194,6 @@ namespace Final_project.Services
 
 
         }  //Don't touch , works 
-
 
         public static void MenuReturnSaleItems()
         {
@@ -382,8 +381,12 @@ namespace Final_project.Services
 
                 existingSale.SaleItemsList.Clear();    //cleaning list of sale items for existing sale that will be deleted
 
-                Console.WriteLine("Products from sale ID: ");
+                Console.WriteLine("Products were succesfuly returned: ");
+                Console.WriteLine("------------------------------------------------------------");
                 ProductsService.GetAllProductsToTable();
+                Console.WriteLine( "Your list of sales");
+                Console.WriteLine("------------------------------------------------------------");
+                SalesServices.GetAllSalesToTable();
 
                 if (isTest)
                 {
@@ -432,16 +435,16 @@ namespace Final_project.Services
 
 
                 Console.WriteLine("Enter sale's date (dd/MM/yyyy) : ");
-                DateTime startDate = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DateTime startDate = DateTime.ParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
                 Console.WriteLine("Enter the ending date");
 
                 Console.WriteLine("Enter sale's date (dd/MM/yyyy) : ");
-                DateTime endDate = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DateTime endDate = DateTime.ParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
                 endDate = endDate.AddDays(1).AddSeconds(-1);
 
-                if (startDate >= DateTime.Now || endDate > DateTime.Now)
+                if (startDate >= DateTime.Now || endDate >= DateTime.Now.AddDays(2).AddSeconds(-1)) 
                 {
                     throw new Exception("Wrong date input");
                 }
@@ -454,7 +457,9 @@ namespace Final_project.Services
 
             catch (Exception ex)
             {
-                Console.WriteLine("");
+                Console.WriteLine("Error occured");
+                Console.WriteLine( ex.Message);
+
 
             }
 
@@ -500,15 +505,18 @@ namespace Final_project.Services
             try
             {
                 Console.WriteLine("Enter sale's date (dd/MM/yyyy) : ");
-                DateTime date = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DateTime date = DateTime.ParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+
 
                 if (date > DateTime.Now)
                 {
                     throw new Exception("Can't predict future :)");
                 }
 
-                DateTime DateEnd = date.AddSeconds(-1);
                 DateTime DateStart = date.AddSeconds(1);
+                DateTime DateEnd = date.AddDays(1).AddSeconds(-1);
+               
 
                 SalesServices.ListAllSalesAccordingToTimeRange(DateStart, DateEnd);
 
