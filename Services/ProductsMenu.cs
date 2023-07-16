@@ -1,18 +1,16 @@
 ﻿using Final_project.Abstract;
 using Final_project.Common.Enums;
 using Final_project.Storage_classes;
-using System;
-using System.Collections.Specialized;
 
 namespace Final_project.Services
 {
-    internal class ProductsMenu:IproductMenu
+    internal class ProductsMenu : IproductMenu
     {
 
         public static void MenuAddNewProduct()
         {
             try
-            { 
+            {
                 //Full name check
                 Console.WriteLine("Enter Product Name: ");
                 Console.WriteLine("------------------------------------------------------------");
@@ -62,7 +60,7 @@ namespace Final_project.Services
               = Enum.TryParse(typeof(ProductCategories), category, true, out object parsedCategory);
 
                 if (!isSuccessful)
-                { 
+                {
                     throw new InvalidDataException("Category not found!: ");
 
                 }
@@ -123,7 +121,7 @@ namespace Final_project.Services
 
 
                 //User Menu for changing user property
-               
+
                 Console.WriteLine("Select which property you would like to change");
                 Console.WriteLine("1.Product Name");
                 Console.WriteLine("2.Product Price");
@@ -146,7 +144,7 @@ namespace Final_project.Services
                         var name = Console.ReadLine();
                         if (string.IsNullOrWhiteSpace(name))
                             throw new FormatException("Name is empty!");
-                      
+
 
                         product.ProductName = name.Trim();
                         break;
@@ -242,20 +240,20 @@ namespace Final_project.Services
 
                 int id;
 
-                string idString =Console.ReadLine();
+                string idString = Console.ReadLine();
 
-                bool idIsParsed=int.TryParse(idString, out id);
+                bool idIsParsed = int.TryParse(idString, out id);
 
                 if (!idIsParsed)
                     throw new Exception("Wrong ID input)");
 
-                
 
-                if (ProductsService.ProhibitDeletingProductThatAlreadyTransferedToSale(id)==true) 
+
+                if (ProductsService.ProhibitDeletingProductThatAlreadyTransferedToSale(id) == true)
                 {
                     ProductsService.RemoveProduct(id);
                 }
-             
+
                 ProductsService.GetAllProductsToTable();
             }
 
@@ -350,7 +348,7 @@ namespace Final_project.Services
                 if (ProductsStorage.Products.Count == 0)
                 {
                     throw new Exception("Product storage is empty");
-                    
+
                 }
 
                 Console.WriteLine("------------------------------------------------------------");

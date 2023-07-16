@@ -10,12 +10,11 @@ namespace Final_project
     internal class Program
     {
         static void Main(string[] args)
-        {   //Instance to product members
+        {   //Instance to product members,just in case
             ProductsService productsService = new ProductsService();
             ProductsMenu menu = new ProductsMenu();
 
-
-            //Instance to sales memvers
+            //Instance to sales memvers, just in case
             SalesMenu salesMenu = new SalesMenu();
             SalesServices salesServices = new SalesServices();
 
@@ -25,10 +24,8 @@ namespace Final_project
             SalesStorage salesStorage = new SalesStorage();
 
             //Make  SalesMenu.isTest true to enable testing mode
-
             if (SalesMenu.isTest)
             {
-
                 ////Test products 
                 Product product = new() { ProductName = "Coffe", Price = 1, ProductCategory = 0, ProductCount = 10 };
                 Product product1 = new() { ProductName = "Tea", Price = 1, ProductCategory = 0, ProductCount = 10 };
@@ -36,15 +33,12 @@ namespace Final_project
                 Product product3 = new() { ProductName = "Soda", Price = 3, ProductCategory = 0, ProductCount = 40 };
 
 
-
                 ProductsStorage.Products.Add(product);
                 ProductsStorage.Products.Add(product1);
                 ProductsStorage.Products.Add(product2);
                 ProductsStorage.Products.Add(product3);
                 //Test products
-
             }
-
 
             int option;
 
@@ -75,8 +69,6 @@ namespace Final_project
                     default:
                         Console.WriteLine("Option doesn't exist");
                         break;
-
-
                 }
             }
             while (option != 0);

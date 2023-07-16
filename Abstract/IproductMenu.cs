@@ -2,7 +2,6 @@
 {
     internal interface IproductMenu
     {
-
         public static void MenuAddNewProduct()
         {
 

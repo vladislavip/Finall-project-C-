@@ -1,14 +1,4 @@
-﻿using Final_project.Common.Models;
-using Final_project.Services;
-using Final_project.Storage_classes;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Final_project.Abstract
+﻿namespace Final_project.Abstract
 {
     internal interface ISalesMenu
     {
@@ -26,9 +16,9 @@ namespace Final_project.Abstract
         }
         public static void MenuListAllSales()
         {
-            
 
-        }   
+
+        }
         public static void MenuListAllSalesAccordingToDateRange()
         {
 

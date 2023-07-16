@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Final_project.Services
 {
-    internal class SalesMenu:ISalesMenu
+    internal class SalesMenu : ISalesMenu
     {
         public static bool isTest = false;
 
@@ -40,7 +40,7 @@ namespace Final_project.Services
 
                 var existingProduct = ProductsStorage.Products.Find(x => x.Id == id);
 
-
+                
                 if (existingProduct == null)
                 {
                     Console.WriteLine("Product not found,try again: ");
@@ -58,13 +58,12 @@ namespace Final_project.Services
                 if (isSuccesfullParsestringCount == false)
                 {
                     Console.WriteLine("Wrong input");
+                    Console.WriteLine("------------------------------------------------------------");
                     goto Start;
 
                 }
 
-                Console.WriteLine("------------------------------------------------------------");
-
-
+               
                 //-----------------------Filtering input------------------------------------------------
                 if (count == 0 || count < 0)
                 {
@@ -224,7 +223,7 @@ namespace Final_project.Services
                 SalesServices.GetAllSaleItemsToTable();
 
 
-                Console.WriteLine("Enter sales item's id you want to return");
+                Console.WriteLine("Enter sales item's id you want to return: ");
                 Console.WriteLine("------------------------------------------------------------");
 
                 string idString = Console.ReadLine();                                   //ID filter
@@ -239,7 +238,7 @@ namespace Final_project.Services
                     throw new Exception($"Id{id} doesn't exist: ");
                 }
 
-                Console.WriteLine("Input the quantity you want you want to return ");
+                Console.WriteLine("Input the quantity you want you want to return:  ");
                 Console.WriteLine("------------------------------------------------------------");
 
                 string countString = Console.ReadLine();                                   //count filter
@@ -286,8 +285,11 @@ namespace Final_project.Services
 
 
                 //---------------Storage cleaners---------------------------------------------------------------------
-
-                exisitngSale.SaleItemsList.Remove(existingSaleitems);  //Decreasing sales items count
+                if (exisitngSale.SaleValue==0)
+                {
+                    exisitngSale.SaleItemsList.Remove(existingSaleitems);
+                }
+                  //Decreasing sales items count
 
 
                 if (exisitngSale.SaleValue == 0)
@@ -373,8 +375,8 @@ namespace Final_project.Services
 
             }
 
-        } //Works , ask if empty storages should be cleaned
-        public static void MenuDeleteSale()      //.....
+        } //Works 
+        public static void MenuDeleteSale()      //Works
         {
             try
             {
@@ -420,6 +422,10 @@ namespace Final_project.Services
                     SalesItemStorage.SalesItems.Remove(item); // removing sales item from static storage
 
                 }
+
+
+              
+
 
                 Console.WriteLine("Sale  deleting....");
                 Thread.Sleep(1000);
@@ -487,7 +493,7 @@ namespace Final_project.Services
                 Console.WriteLine("------------------------------------------------------------");
             }
 
-        }
+        } 
         public static void MenuListAllSales()
         {
             SalesServices.GetAllSalesToTable();   // Works
@@ -611,7 +617,6 @@ namespace Final_project.Services
 
 
         } //works
-
         public static void NenuShowSaleAccordingToId()
         {
 

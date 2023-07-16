@@ -21,14 +21,13 @@ namespace Final_project.Services
         {
             try
             {
-                var sales = SalesStorage.Sales; // 
 
                 var saleItems = SalesServices.GetAllSaleItems();
 
-                var table = new ConsoleTable("Sale ID", "Sale item ID", "Sale item product", "Sales items count");
+                var table = new ConsoleTable(/*"Sale ID",*/ "Sale item ID", "Sale item product", "Sales items count");
 
                 if (saleItems.Count == 0)
-                     
+
                 {
                     Console.WriteLine("------------------------------------------------------------");
                     Console.WriteLine("No Sales items yet or maybe they are all deleted due to return of products: ");
@@ -36,15 +35,12 @@ namespace Final_project.Services
                 }
 
 
-                foreach ( var sale in sales) 
-                {
-                    foreach (var items in saleItems)
-                    {
-                        table.AddRow(sale.Id,items.Id, items.SalesItem.ProductName, items.SalesItemCount);
-                    }
 
+                foreach (var items in saleItems)
+                {
+                    table.AddRow(items.Id, items.SalesItem.ProductName, items.SalesItemCount);
                 }
-              
+
 
                 table.Write();
 
@@ -69,7 +65,7 @@ namespace Final_project.Services
                 var sales = SalesStorage.Sales;
 
 
-                var table = new ConsoleTable("Sale Id", "Sale Value", "Sale Items Count", "Sale Item Id","Sale Item Value", "Product Name", "Product Price", "Sale Date");
+                var table = new ConsoleTable("Sale Id", "Sale Value", "Sale Items Count", "Sale Item Id", "Sale Item Value", "Product Name", "Product Price", "Sale Date");
 
                 foreach (var sale in sales)
                 {
@@ -77,7 +73,7 @@ namespace Final_project.Services
 
                     foreach (var saleItem in list)
                     {
-                       table.AddRow(sale.Id, sale.SaleValue, saleItem.SalesItemCount, saleItem.Id,saleItem.SalesItemCount*saleItem.SalesItem.Price, saleItem.SalesItem.ProductName, saleItem.SalesItem.Price, sale.SaleDate);
+                        table.AddRow(sale.Id, sale.SaleValue, saleItem.SalesItemCount, saleItem.Id, saleItem.SalesItemCount * saleItem.SalesItem.Price, saleItem.SalesItem.ProductName, saleItem.SalesItem.Price, sale.SaleDate);
 
                     }
                 }
@@ -141,11 +137,11 @@ namespace Final_project.Services
         {
             try
             {
-                var sales = SalesStorage.Sales; // 
+
 
                 var saleItems = list;
 
-                var table = new ConsoleTable("Sale ID", "Sale item ID", "Sale item product", "Sales items count");
+                var table = new ConsoleTable("Sale item ID", "Sale item product", "Sales items count");
 
                 if (saleItems.Count == 0)
 
@@ -156,14 +152,12 @@ namespace Final_project.Services
                 }
 
 
-                foreach (var sale in sales)
-                {
-                    foreach (var items in saleItems)
-                    {
-                        table.AddRow(sale.Id, items.Id, items.SalesItem.ProductName, items.SalesItemCount);
-                    }
 
+                foreach (var items in saleItems)
+                {
+                    table.AddRow(items.Id, items.SalesItem.ProductName, items.SalesItemCount);
                 }
+
 
 
                 table.Write();
@@ -249,9 +243,9 @@ namespace Final_project.Services
 
                 if (sales == null)
                 {
-                    throw new Exception($"Sale with id:{id} doesnt exists"); 
+                    throw new Exception($"Sale with id:{id} doesnt exists");
                 }
-                   
+
 
                 Console.WriteLine($"Sale with ID: {id}");
                 SalesServices.GetAnySaleListToTable(sales);
@@ -266,8 +260,8 @@ namespace Final_project.Services
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("------------------------------------------------------------");
             }
-        } 
-        
+        }
+
     }
 }
 

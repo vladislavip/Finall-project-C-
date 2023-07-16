@@ -34,7 +34,7 @@ namespace Final_project.Services
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("------------------------------------------------------------");
                 return 0;
-                
+
             }
 
         }
@@ -84,15 +84,15 @@ namespace Final_project.Services
 
         }
 
-        public static bool ProhibitDeletingProductThatAlreadyTransferedToSale (int id)    //If sale item exist , product related to this sale item is prohibited to delete 
+        public static bool ProhibitDeletingProductThatAlreadyTransferedToSale(int id)    //If sale item exist , product related to this sale item is prohibited to delete 
 
         {
             try
             {
-                var productAlreadyOnsale = SalesItemStorage.SalesItems.Find(x=>x.Id == id);
+                var productAlreadyOnsale = SalesItemStorage.SalesItems.Find(x => x.Id == id);
 
                 if (productAlreadyOnsale is not null)
-                    
+
                     throw new Exception($"Product with Id: {id} is already on sale , delete is prohibited!: ");
 
                 return true;

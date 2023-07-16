@@ -1,21 +1,13 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Final_project.Services
+﻿namespace Final_project.Services
 {
     internal static class SubMenuHelper
     {
-       public static void ProductSubMenu ()
+        public static void ProductSubMenu()
         {
             int option;
 
             do
             {
-               
                 Console.WriteLine("1.Add new product");
                 Console.WriteLine("2.Change product info");
                 Console.WriteLine("3.Delete product");
@@ -29,7 +21,7 @@ namespace Final_project.Services
 
                 Console.WriteLine("Enter option");
 
-                while (!int.TryParse(Console.ReadLine(), out option)) 
+                while (!int.TryParse(Console.ReadLine(), out option))
                 {
                     Console.WriteLine("Invalid option!");
                     Console.WriteLine("Enter option");
@@ -78,7 +70,7 @@ namespace Final_project.Services
                         ProductsMenu.MenuSearchProductByName();
                         Console.WriteLine("------------------------------------------------------------");
                         break;
-                    
+
                     default:
                         Console.WriteLine("------------------------------------------------------------");
                         Console.WriteLine("Option doesn't exist");
@@ -110,7 +102,7 @@ namespace Final_project.Services
 
                 Console.WriteLine("Enter option");
 
-                while (!int.TryParse(Console.ReadLine(), out option)) 
+                while (!int.TryParse(Console.ReadLine(), out option))
                 {
                     Console.WriteLine("Invalid option!");
                     Console.WriteLine("Enter option again");
@@ -171,9 +163,9 @@ namespace Final_project.Services
 
     }
 
-        
 
 
 
-    
+
+
 }

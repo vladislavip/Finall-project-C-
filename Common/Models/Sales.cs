@@ -23,7 +23,5 @@ namespace Final_project.Common.Models
 
         public List<SalesItems> SaleItemsList;
 
-       
-        
     }
 }
