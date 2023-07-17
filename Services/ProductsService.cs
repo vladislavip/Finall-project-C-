@@ -1,11 +1,12 @@
 ﻿using ConsoleTables;
+using Final_project.Abstract;
 using Final_project.Common.Enums;
 using Final_project.Common.Models;
 using Final_project.Storage_classes;
 
 namespace Final_project.Services
 {
-    internal class ProductsService
+    internal class ProductsService:ISalesMenu
     {
 
         public static int AddNewProduct(string productName, decimal price, object parsedCategory, int productCount)
@@ -18,7 +19,6 @@ namespace Final_project.Services
                     newProduct.Price = price;
                     newProduct.ProductCategory = (ProductCategories)parsedCategory;
                     newProduct.ProductCount = productCount;
-
                 }
                 ProductsStorage.Products.Add(newProduct);
                 return newProduct.Id;
@@ -34,7 +34,6 @@ namespace Final_project.Services
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("------------------------------------------------------------");
                 return 0;
-
             }
 
         }
@@ -61,17 +60,13 @@ namespace Final_project.Services
                     return;
                 }
 
-
                 foreach (var product in products)
                 {
                     table.AddRow(product.Id, product.ProductName, product.Price,
                         product.ProductCategory, product.ProductCount);
                 }
-
                 table.Write();
-
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine("------------------------------------------------------------");
@@ -81,11 +76,9 @@ namespace Final_project.Services
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("------------------------------------------------------------");
             }
-
         }
 
-        public static bool ProhibitDeletingProductThatAlreadyTransferedToSale(int id)    //If sale item exist , product related to this sale item is prohibited to delete 
-
+        public static bool ProhibitDeletingProductThatAlreadyTransferedToSale(int id)    //If sale item exist , product related to this sale item is prohibited to delete
         {
             try
             {
@@ -108,8 +101,6 @@ namespace Final_project.Services
                 return false;
                 Console.WriteLine("------------------------------------------------------------");
             }
-
-
         }
 
         public static void RemoveProduct(int productId)
@@ -188,13 +179,11 @@ namespace Final_project.Services
                     return;
                 }
 
-
                 foreach (var product in categoryList)
                 {
                     table.AddRow(product.Id, product.ProductName, product.Price,
                         product.ProductCategory, product.ProductCount);
                 }
-
                 table.Write();
             }
 
@@ -215,7 +204,6 @@ namespace Final_project.Services
             {
                 var found = ProductsStorage.Products.Where(x => x.Price >= lower && x.Price <= upper).ToList();
 
-
                 var table = new ConsoleTable("Product Id", "Product Name", "Product Price",
                         "Product Category", "Product Count");
 
@@ -226,7 +214,6 @@ namespace Final_project.Services
                     Console.WriteLine("------------------------------------------------------------");
                     return;
                 }
-
 
                 foreach (var product in found)
                 {
@@ -255,7 +242,6 @@ namespace Final_project.Services
                         "Product Category", "Product Count");
 
                 if (found.Count == 0)
-
                 {
                     Console.WriteLine($"Products with Name: {productName} not found");
                     return;
@@ -283,7 +269,6 @@ namespace Final_project.Services
         }
 
         public static void GetAnyProductListToTabe(List<Product> productsList)
-
         {
             try
             {
@@ -293,7 +278,6 @@ namespace Final_project.Services
                         "Product Category", "Product Count");
 
                 if (products.Count == 0)
-
                 {
                     Console.WriteLine("No products: ");
                     Console.WriteLine("------------------------------------------------------------");
@@ -305,10 +289,8 @@ namespace Final_project.Services
                     table.AddRow(product.Id, product.ProductName, product.Price,
                         product.ProductCategory, product.ProductCount);
                 }
-
                 table.Write();
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine("------------------------------------------------------------");
@@ -318,8 +300,6 @@ namespace Final_project.Services
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("------------------------------------------------------------");
             }
-
         }
-
     }
 }

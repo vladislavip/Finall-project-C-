@@ -21,7 +21,6 @@ namespace Final_project.Services
         {
             try
             {
-
                 var saleItems = SalesServices.GetAllSaleItems();
 
                 var table = new ConsoleTable(/*"Sale ID",*/ "Sale item ID", "Sale item product", "Sales items count");
@@ -34,16 +33,12 @@ namespace Final_project.Services
                     return;
                 }
 
-
-
                 foreach (var items in saleItems)
                 {
                     table.AddRow(items.Id, items.SalesItem.ProductName, items.SalesItemCount);
                 }
 
-
                 table.Write();
-
             }
 
             catch (Exception ex)
@@ -55,7 +50,6 @@ namespace Final_project.Services
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("------------------------------------------------------------");
             }
-
         }
         //Show all sales from storage
         public static void GetAllSalesToTable()
@@ -63,7 +57,6 @@ namespace Final_project.Services
             try
             {
                 var sales = SalesStorage.Sales;
-
 
                 var table = new ConsoleTable("Sale Id", "Sale Value", "Sale Items Count", "Sale Item Id", "Sale Item Value", "Product Name", "Product Price", "Sale Date");
 
@@ -77,9 +70,7 @@ namespace Final_project.Services
 
                     }
                 }
-
                 table.Write();
-
             }
 
             catch (Exception ex)
@@ -97,7 +88,6 @@ namespace Final_project.Services
         }
         //Shows all sales from storage in table
         public static void GetAnySaleListToTable(List<Sales> list)
-
         {
             try
             {
@@ -114,11 +104,8 @@ namespace Final_project.Services
                         table.AddRow(sale.Id, sale.SaleValue, saleItem.SalesItemCount, saleItem.Id, saleItem.SalesItemCount * saleItem.SalesItem.Price, saleItem.SalesItem.ProductName, saleItem.SalesItem.Price, sale.SaleDate);
                     }
                 }
-
                 table.Write();
-
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine("------------------------------------------------------------");
@@ -128,8 +115,6 @@ namespace Final_project.Services
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("------------------------------------------------------------");
             }
-
-
         }
         //Any sale list to table
         public static void GetAnySaleItemsListToTable(List<SalesItems> list)
@@ -137,8 +122,6 @@ namespace Final_project.Services
         {
             try
             {
-
-
                 var saleItems = list;
 
                 var table = new ConsoleTable("Sale item ID", "Sale item product", "Sales items count");
@@ -151,17 +134,12 @@ namespace Final_project.Services
                     return;
                 }
 
-
-
                 foreach (var items in saleItems)
                 {
                     table.AddRow(items.Id, items.SalesItem.ProductName, items.SalesItemCount);
                 }
 
-
-
                 table.Write();
-
             }
 
             catch (Exception ex)
@@ -173,9 +151,6 @@ namespace Final_project.Services
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("------------------------------------------------------------");
             }
-
-
-
         }
         //Any sale items list to table
         public static void ListAllSalesAccordingToTimeRange(DateTime startDate, DateTime endDate)
@@ -261,7 +236,6 @@ namespace Final_project.Services
                 Console.WriteLine("------------------------------------------------------------");
             }
         }
-
     }
 }
 

@@ -9,7 +9,6 @@ namespace Final_project.Services
     {
         public static bool isTest = false;
 
-
         public static void MenuAddNewSale()
         {
             List<SalesItems> tempList = new();
@@ -37,10 +36,8 @@ namespace Final_project.Services
                     goto Start;
                 }
 
-
                 var existingProduct = ProductsStorage.Products.Find(x => x.Id == id);
 
-                
                 if (existingProduct == null)
                 {
                     Console.WriteLine("Product not found,try again: ");
@@ -48,13 +45,11 @@ namespace Final_project.Services
                     goto Start;
                 }
 
-
                 Console.WriteLine($"Enter quantity of sale items to be sold from product: {existingProduct.ProductName}");
                 Console.WriteLine("------------------------------------------------------------");
 
-
                 string stringCount = Console.ReadLine();
-                bool isSuccesfullParsestringCount = int.TryParse(stringCount, out int count);                 //Count check
+                bool isSuccesfullParsestringCount = int.TryParse(stringCount, out int count); //Count check
                 if (isSuccesfullParsestringCount == false)
                 {
                     Console.WriteLine("Wrong input");
@@ -62,8 +57,6 @@ namespace Final_project.Services
                     goto Start;
 
                 }
-
-               
                 //-----------------------Filtering input------------------------------------------------
                 if (count == 0 || count < 0)
                 {
@@ -80,6 +73,7 @@ namespace Final_project.Services
                     goto Start;
 
                 }
+
                 if (existingProduct.ProductCount - count >= 0)
                 {
                     existingProduct.ProductCount = existingProduct.ProductCount - count;
@@ -101,7 +95,6 @@ namespace Final_project.Services
                     salesItem.SalesItemCount = count;
 
                 }
-
 
                 SalesItemStorage.SalesItems.Add(salesItem);
                 tempList.Add(salesItem);
@@ -137,11 +130,8 @@ namespace Final_project.Services
                 Console.WriteLine("Done");
                 Sales sale = new();
                 {
-
                     sale.SaleDate = DateTime.Now;
                     sale.SaleItemsList = new();
-
-
                 }
 
                 foreach (var item in tempList)
@@ -151,20 +141,14 @@ namespace Final_project.Services
 
                 sale.SaleValue = cumulativeSaleValue;
 
-
                 sale.SaleItemsList = tempList;
-
-
 
                 SalesStorage.Sales.Add(sale);
 
                 Console.WriteLine($"Sale with Id:{sale.Id} succesfuly added: ");
                 Console.WriteLine("------------------------------------------------------------");
                 SalesServices.GetAllSalesToTable();
-
-
                 //-------------------------------------------Test area----------------------------------------------------
-
                 if (isTest)
                 {
 
@@ -190,9 +174,7 @@ namespace Final_project.Services
                     SalesServices.GetAnySaleItemsListToTable(tempList);
 
                 }
-
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine("------------------------------------------------------------");
@@ -203,13 +185,9 @@ namespace Final_project.Services
                 Console.WriteLine("------------------------------------------------------------");
 
             }
-
-
         }  //Don't touch , works 
-
         public static void MenuReturnSaleItems()
         {
-
             try
             {
             Start:
@@ -246,7 +224,6 @@ namespace Final_project.Services
                 if (isSuccesfullParseSalesId == false)
                     throw new Exception("Wrong count input");
 
-
                 //------------------Count filter--------------------------------------------------
                 if (count == 0 || count < 0)
                 {
@@ -271,25 +248,19 @@ namespace Final_project.Services
                     existingSaleitems.SalesItemCount -= count;
 
                 }
-
-
                 var exisitngSale = SalesStorage.Sales.Find((x => x.SaleItemsList.Contains(existingSaleitems)));
 
                 if (exisitngSale == null)
                     throw new Exception("Sale doesn't contain following sale item ");
 
-
-
-
                 exisitngSale.SaleValue -= existingSaleitems.SalesItem.Price * count;     //Decreasing sales value
 
-
                 //---------------Storage cleaners---------------------------------------------------------------------
-                if (exisitngSale.SaleValue==0)
+                if (exisitngSale.SaleValue == 0)
                 {
                     exisitngSale.SaleItemsList.Remove(existingSaleitems);
                 }
-                  //Decreasing sales items count
+                //Decreasing sales items count
 
 
                 if (exisitngSale.SaleValue == 0)
@@ -314,8 +285,6 @@ namespace Final_project.Services
                     Console.WriteLine("------------------------------------------------------------");
                     Console.WriteLine($"ATTENTION sale with id:{exisitngSale.Id}, will be deleted , due to full return of its sales items: ");
                     SalesStorage.Sales.Remove(exisitngSale);
-
-
                 }
 
                 //----------------------------------------------------------------------------------------------
@@ -338,7 +307,6 @@ namespace Final_project.Services
 
                 if (isTest)
                 {
-
                     string loading = "LOADING REPORTS";
                     for (int i = 0; i < loading.Length; i++)
                     {
@@ -360,11 +328,9 @@ namespace Final_project.Services
                     SalesServices.GetAnySaleItemsListToTable(exisitngSale.SaleItemsList);
 
                 }
-
             }
 
             catch (Exception ex)
-
             {
                 Console.WriteLine("------------------------------------------------------------");
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -372,7 +338,6 @@ namespace Final_project.Services
                 Console.WriteLine(ex.Message);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("------------------------------------------------------------");
-
             }
 
         } //Works 
@@ -393,8 +358,6 @@ namespace Final_project.Services
                 if (isSuccesfullParseSalesId == false)
                     throw new Exception("Wrong sale id input: ");
 
-
-
                 var existingSale = SalesStorage.Sales.FirstOrDefault(x => x.Id == id);
 
                 if (existingSale == null)
@@ -404,15 +367,13 @@ namespace Final_project.Services
                 if (existingSale.SaleValue == 0 && existingSale.SaleItemsList.Count == 0)
                     throw new Exception($"sale with Id:{id} was already returned");
 
-
                 var salesItemsList = existingSale.SaleItemsList;
 
                 Console.WriteLine("Following sale items will be returned from sale: ");
                 Console.WriteLine("------------------------------------------------------------");
                 SalesServices.GetAnySaleItemsListToTable(salesItemsList);
 
-
-                foreach (var item in salesItemsList)    //Returning product
+                foreach (var item in salesItemsList)  //Returning product
                 {
 
                     var exisitngProduct = ProductsStorage.Products.Find(x => x.Id == item.SalesItem.Id);
@@ -423,29 +384,20 @@ namespace Final_project.Services
 
                 }
 
-
-              
-
-
                 Console.WriteLine("Sale  deleting....");
                 Thread.Sleep(1000);
                 Console.WriteLine("Done");
                 Console.WriteLine("------------------------------------------------------------");
 
-
                 existingSale.SaleValue = 0;
 
-                existingSale.SaleItemsList.Clear();    //cleaning list of sale items for existing sale that will be deleted
+                existingSale.SaleItemsList.Clear(); //cleaning list of sale items for existing sale that will be deleted
                 if (existingSale.SaleValue == 0)
 
                 {
-
-
                     Console.WriteLine("------------------------------------------------------------");
                     Console.WriteLine($"ATTENTION sale with id:{existingSale.Id}, will be deleted , due to full return of its sales items: ");
                     SalesStorage.Sales.Remove(existingSale);
-
-
                 }
 
                 Console.WriteLine("Products were succesfuly returned: ");
@@ -480,7 +432,6 @@ namespace Final_project.Services
                     SalesServices.GetAnySaleItemsListToTable(existingSale.SaleItemsList);
 
                 }
-
             }
 
             catch (Exception ex)
@@ -493,24 +444,18 @@ namespace Final_project.Services
                 Console.WriteLine("------------------------------------------------------------");
             }
 
-        } 
+        }
         public static void MenuListAllSales()
         {
             SalesServices.GetAllSalesToTable();   // Works
-
-        }   // Works
+        }   
         public static void MenuListAllSalesAccordingToDateRange()  // Works
         {
             try
             {
-
-
-
                 Console.WriteLine("Enter sale's range start date (dd/MM/yyyy): ");
                 Console.WriteLine("------------------------------------------------------------");
                 DateTime startDate = DateTime.ParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-
-                Console.WriteLine("Enter the ending date");
 
                 Console.WriteLine("Enter sale's range  end date (dd/MM/yyyy): ");
                 Console.WriteLine("------------------------------------------------------------");
@@ -544,14 +489,12 @@ namespace Final_project.Services
         {
             try
             {
-
                 Console.WriteLine("Enter the lower value of sale value: ");
                 Console.WriteLine("------------------------------------------------------------");
                 string lowerValue = Console.ReadLine();
                 bool isSuccesfullParsestringLower = decimal.TryParse(lowerValue, out decimal lower);
                 if (isSuccesfullParsestringLower == false)
                     throw new Exception("Wrong sale value input: ");
-
 
                 Console.WriteLine("Enter the upper value of sale value: ");
                 Console.WriteLine("------------------------------------------------------------");
@@ -560,14 +503,10 @@ namespace Final_project.Services
                 if (isSuccesfullParsestringUper == false)
                     throw new Exception("Wrong sale value input: ");
 
-
                 if (lower < 0 || upper < 0 || lower > upper || lower == upper)
                     throw new Exception("Wrong values input");
 
-
                 SalesServices.ListAllSalesAccordingToValueRange(lower, upper);
-
-
             }
             catch (Exception ex)
             {
@@ -590,8 +529,6 @@ namespace Final_project.Services
                 Console.WriteLine("------------------------------------------------------------");
                 DateTime date = DateTime.ParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
-
-
                 if (date > DateTime.Now)
                 {
                     throw new Exception("Can't predict future :)");
@@ -600,9 +537,7 @@ namespace Final_project.Services
                 DateTime DateStart = date.AddSeconds(1);
                 DateTime DateEnd = date.AddDays(1).AddSeconds(-1);
 
-
                 SalesServices.ListAllSalesAccordingToTimeRange(DateStart, DateEnd);
-
             }
             catch (Exception ex)
 
@@ -615,11 +550,9 @@ namespace Final_project.Services
                 Console.WriteLine("------------------------------------------------------------");
             }
 
-
         } //works
         public static void NenuShowSaleAccordingToId()
         {
-
             try
             {
                 Console.WriteLine("List of all sales");
@@ -646,12 +579,10 @@ namespace Final_project.Services
                 Console.WriteLine(ex.Message);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("------------------------------------------------------------");
-
             }
 
 
         } //works
-
 
     }
 }

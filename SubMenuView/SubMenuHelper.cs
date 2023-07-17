@@ -18,7 +18,6 @@
                 Console.WriteLine("0.Return back to main menu");
                 Console.WriteLine("------------------------------------------------------------");
 
-
                 Console.WriteLine("Enter option");
 
                 while (!int.TryParse(Console.ReadLine(), out option))
@@ -160,12 +159,5 @@
             }
             while (option != 0);
         }
-
     }
-
-
-
-
-
-
 }
